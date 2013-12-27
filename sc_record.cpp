@@ -32,7 +32,7 @@
 
 #include <lv2.h>
 
-#define GXPLUGIN_URI "https://github.com/brummer10/sc_record_"
+#define SCPLUGIN_URI "https://github.com/brummer10/screcord"
 
 typedef enum
 {
@@ -99,7 +99,9 @@ public:
 // constructor
 SCrecord::SCrecord() :
   output(NULL),
-  input(NULL) { };
+  input(NULL),
+  output1(NULL),
+  input1(NULL) { };
 
 // destructor
 SCrecord::~SCrecord()
@@ -276,7 +278,7 @@ void SCrecord::cleanup(LV2_Handle instance)
 
 const LV2_Descriptor SCrecord::descriptor =
 {
-  GXPLUGIN_URI "#mono_record",
+  SCPLUGIN_URI "#mono_record",
   SCrecord::instantiate,
   SCrecord::connect_port,
   SCrecord::activate,
@@ -288,7 +290,7 @@ const LV2_Descriptor SCrecord::descriptor =
 
 const LV2_Descriptor SCrecord::descriptor1 =
 {
-  GXPLUGIN_URI "#stereo_record",
+  SCPLUGIN_URI "#stereo_record",
   SCrecord::instantiate_st,
   SCrecord::connect_port,
   SCrecord::activate,

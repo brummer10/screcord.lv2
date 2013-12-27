@@ -30,7 +30,7 @@
 	foaf:mbox <mailto:brummer@web.de> ;
 	rdfs:seeAlso <https://github.com/brummer10> .
 
-<https://github.com/brummer10/sc_record_#mono_record>
+<https://github.com/brummer10/screcord#mono_record>
     a lv2:Plugin ,
         lv2:DelayPlugin ;
     doap:maintainer <https://github.com/brummer10#me> ;
@@ -91,7 +91,7 @@
         lv2:name "In" ;
     ].
 
-<https://github.com/brummer10/sc_record_#stereo_record>
+<https://github.com/brummer10/screcord#stereo_record>
     a lv2:Plugin ,
         lv2:DelayPlugin ;
     doap:maintainer <https://github.com/brummer10#me> ;
