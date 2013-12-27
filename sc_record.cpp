@@ -48,7 +48,6 @@ typedef enum
 ////////////////////////////// LOCAL INCLUDES //////////////////////////
 
 #include "screcord1.cc"
-#include "screcord2.cc"
 
 ////////////////////////////// PLUG-IN CLASS ///////////////////////////
 
@@ -60,10 +59,8 @@ private:
   float*      input;
   float*      output1;
   float*      input1;
-  bool        stereo;
   // pointer to dsp class
   screcord::SCapture*  record;
-  screcord_st::SCapture*  record_st;
   // private functions
   inline void run_dsp_(uint32_t n_samples);
   inline void run_dsp_st(uint32_t n_samples);
@@ -106,29 +103,22 @@ SCrecord::SCrecord() :
 // destructor
 SCrecord::~SCrecord()
 {
-  if (stereo) {
-    record_st->activate_plugin(false, record_st);
-    record_st->delete_instance(record_st);
-  } else {
-    record->activate_plugin(false, record);
-    record->delete_instance(record);
-  }
+  record->activate_plugin(false, record);
+  record->delete_instance(record);
 };
 
 ///////////////////////// PRIVATE CLASS  FUNCTIONS /////////////////////
 
 void SCrecord::init_dsp_(uint32_t rate)
 {
-  stereo = false;
-  record = new screcord::SCapture();
+  record = new screcord::SCapture(1);
   record->set_samplerate(rate, record); // init the DSP class
 }
 
 void SCrecord::init_dsp_st(uint32_t rate)
 {
-  stereo = true;
-  record_st = new screcord_st::SCapture();
-  record_st->set_samplerate(rate, record_st); // init the DSP class
+  record = new screcord::SCapture(2);
+  record->set_samplerate(rate, record); // init the DSP class
 }
 
 // connect the Ports used by the plug-in class
@@ -156,28 +146,19 @@ void SCrecord::connect_(uint32_t port,void* data)
 void SCrecord::activate_f()
 {
   // allocate the internal DSP mem
-  if (stereo) 
-    record_st->activate_plugin(true, record_st);
-  else
-    record->activate_plugin(true, record);
+  record->activate_plugin(true, record);
 }
 
 void SCrecord::clean_up()
 {
   // delete the internal DSP mem
-  if (stereo) 
-    record_st->activate_plugin(false, record_st);
-  else
-    record->activate_plugin(false, record);
+  record->activate_plugin(false, record);
 }
 
 void SCrecord::deactivate_f()
 {
   // delete the internal DSP mem
-  if (stereo) 
-    record_st->activate_plugin(false, record_st);
-  else
-    record->activate_plugin(false, record);
+  record->activate_plugin(false, record);
 }
 
 void SCrecord::run_dsp_(uint32_t n_samples)
@@ -187,7 +168,7 @@ void SCrecord::run_dsp_(uint32_t n_samples)
 
 void SCrecord::run_dsp_st(uint32_t n_samples)
 {
-  record_st->stereo_audio(static_cast<int>(n_samples), input, input1, output, output1, record_st);
+  record->stereo_audio(static_cast<int>(n_samples), input, input1, output, output1, record);
 }
 
 void SCrecord::connect_all__ports(uint32_t port, void* data)
@@ -195,10 +176,7 @@ void SCrecord::connect_all__ports(uint32_t port, void* data)
   // connect the Ports used by the plug-in class
   connect_(port,data); 
   // connect the Ports used by the DSP class
-  if (stereo) 
-    record_st->connect_ports(port,  data, record_st);
-  else
-    record->connect_ports(port,  data, record);
+  record->connect_ports(port,  data, record);
 }
 
 ////////////////////// STATIC CLASS  FUNCTIONS  ////////////////////////
