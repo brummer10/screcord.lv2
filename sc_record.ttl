@@ -66,7 +66,8 @@
         lv2:default 0.0 ;
         lv2:minimum 0.0 ;
         lv2:maximum 1.0 ;
-        rdfs:comment " recorded files goes to ~/home/lv2record/ ";
+        rdfs:comment "recorded files goes to ~/home/lv2record/" , 
+        "Aufnahmen gehen nach ~/home/lv2record/ "@de;
     ] , [
         a lv2:OutputPort ,
             lv2:ControlPort ;
@@ -128,7 +129,8 @@
         lv2:default 0.0 ;
         lv2:minimum 0.0 ;
         lv2:maximum 1.0 ;
-        rdfs:comment " recorded files goes to ~/home/lv2record/ ";
+        rdfs:comment "recorded files goes to ~/home/lv2record/" , 
+        "Aufnahmen gehen nach ~/home/lv2record/ "@de;
     ] , [
         a lv2:OutputPort ,
             lv2:ControlPort ;
