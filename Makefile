@@ -10,7 +10,7 @@
 	VER = 0.1
 
 	CXXFLAGS = -I. -Wall -ffast-math  `pkg-config --cflags sndfile`
-	LDFLAGS = -I. -shared -Llibrary -lc -lm  -fPIC -DPIC `pkg-config --libs sndfile` 
+	LDFLAGS = -I. -pthread -shared -Llibrary -lc -lm -lrt -fPIC -DPIC `pkg-config --libs sndfile` 
 
 	OBJECTS = $(NAME).cpp 
 
