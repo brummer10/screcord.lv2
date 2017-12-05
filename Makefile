@@ -1,5 +1,6 @@
-	user = $(shell whoami)
-	ifeq ($(user),root)
+	ifneq ($(PREFIX),"")
+	INSTALL_DIR = $(PREFIX)/lib/lv2
+	else ifeq ($(shell whoami),root)
 	INSTALL_DIR = /usr/lib/lv2
 	else 
 	INSTALL_DIR = ~/.lv2
@@ -9,8 +10,8 @@
 	BUNDLE = $(NAME).lv2
 	VER = 0.1
 
-	CXXFLAGS = -I. -Wall -ffast-math  `pkg-config --cflags sndfile`
-	LDFLAGS = -I. -pthread -shared -Llibrary -lc -lm -lrt -fPIC -DPIC `pkg-config --libs sndfile` 
+	CXXFLAGS += -I. -Wall -ffast-math  `pkg-config --cflags sndfile`
+	LDFLAGS += -I. -pthread -shared -Llibrary -lc -lm -lrt -fPIC -DPIC `pkg-config --libs sndfile` 
 
 	OBJECTS = $(NAME).cpp 
 
