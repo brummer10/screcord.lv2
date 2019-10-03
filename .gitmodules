@@ -1,0 +1,3 @@
+[submodule "Xputty"]
+	path = Xputty
+	url = https://github.com/brummer10/Xputty.git

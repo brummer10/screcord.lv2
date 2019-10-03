@@ -35,6 +35,8 @@ private:
     float           *fcheckbox0;
     float           *fcheckbox1;
     float           *fformat;
+    float           *fbargraph;
+    float           *fbargraph1;
     int             IOTA;
     int             iA;
     int             savesize;
@@ -52,6 +54,9 @@ private:
     float           fRecb0[2];
     int             iRecb1[2];
     float           fRecb2[2];
+    float           fRecb0r[2];
+    int             iRecb1r[2];
+    float           fRecb2r[2];
     void        mem_alloc();
     void        mem_free();
     void        clear_state_f();
@@ -179,7 +184,10 @@ inline void SCapture::clear_state_f()
     for (int i=0; i<MAXRECSIZE; i++) fRec1[i] = 0;
     for (int i=0; i<2; i++) fRecb0[i] = 0;
     for (int i=0; i<2; i++) iRecb1[i] = 0;
-    for (int i=0; i<2; i++) fRecb2[i] = 0;
+    for (int i=0; i<2; i++) fRecb2[i] = 0.0000003; // -130db
+    for (int i=0; i<2; i++) fRecb0r[i] = 0;
+    for (int i=0; i<2; i++) iRecb1r[i] = 0;
+    for (int i=0; i<2; i++) fRecb2r[i] = 0.0000003; // -130db
 }
 
 void SCapture::clear_state(SCapture *p)
@@ -302,6 +310,7 @@ void always_inline SCapture::compute(int count, float *input0, float *output0)
         iRecb1[1] = iRecb1[0];
         fRecb0[1] = fRecb0[0];
     }
+    *fbargraph = 20.*log10(fmax(0.0000003,fRecb2[0]));
 }
 
 void SCapture::mono_audio(int count, float *input0, float *output0, SCapture *p)
@@ -313,16 +322,22 @@ void always_inline SCapture::compute_st(int count, float *input0, float *input1,
 {
     if (err) *fcheckbox0 = 0.0;
     int iSlow0 = int(*fcheckbox0);
-    *fcheckbox1 = int(fRecb2[0]);
+    *fcheckbox1 = int(fmax(fRecb2[0],fRecb2r[0]));
     for (int i=0; i<count; i++) {
         float fTemp0 = (float)input0[i];
         float fTemp1 = (float)input1[i];
         // check if we run into clipping
-        float 	fRec3 = fmax(fConst0,fmax(fabsf(fTemp0),fabsf(fTemp1)));
+        float 	fRec3 = fmax(fConst0,fabsf(fTemp0));
         int iTemp1 = int((iRecb1[1] < 4096));
         fRecb0[0] = ((iTemp1)?fmax(fRecb0[1], fRec3):fRec3);
         iRecb1[0] = ((iTemp1)?(1 + iRecb1[1]):1);
         fRecb2[0] = ((iTemp1)?fRecb2[1]:fRecb0[1]);
+
+        float 	fRec3r = fmax(fConst0,fabsf(fTemp1));
+        int iTemp1r = int((iRecb1r[1] < 4096));
+        fRecb0r[0] = ((iTemp1r)?fmax(fRecb0r[1], fRec3r):fRec3r);
+        iRecb1r[0] = ((iTemp1r)?(1 + iRecb1r[1]):1);
+        fRecb2r[0] = ((iTemp1r)?fRecb2r[1]:fRecb0r[1]);
         
         if (iSlow0) { //record
             if (iA) {
@@ -354,7 +369,12 @@ void always_inline SCapture::compute_st(int count, float *input0, float *input1,
         fRecb2[1] = fRecb2[0];
         iRecb1[1] = iRecb1[0];
         fRecb0[1] = fRecb0[0];
+        fRecb2r[1] = fRecb2r[0];
+        iRecb1r[1] = iRecb1r[0];
+        fRecb0r[1] = fRecb0r[0];
     }
+    *fbargraph = 20.*log10(fmax(0.0000003,fRecb2[0]));
+    *fbargraph1 = 20.*log10(fmax(0.0000003,fRecb2r[0]));
 }
 
 void SCapture::stereo_audio(int count, float *input0, float *input1, float *output0, float *output1, SCapture *p)
@@ -374,6 +394,12 @@ void SCapture::connect(uint32_t port,void* data)
 		break;
 	case CLIP: 
 		fcheckbox1 = (float*)data; // , 0.0f, 0.0f, 1.0f, 1.0f 
+		break;
+	case LMETER: 
+		fbargraph = (float*)data; // , -70.0, -70.0, 4.0, 0.00001 
+		break;
+	case RMETER: 
+		fbargraph1 = (float*)data; // , -70.0, -70.0, 4.0, 0.00001 
 		break;
 	default:
 		break;

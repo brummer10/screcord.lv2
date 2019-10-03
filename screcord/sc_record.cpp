@@ -30,20 +30,7 @@
 
 #include <sndfile.hh>
 
-#include <lv2.h>
-
-#define SCPLUGIN_URI "https://github.com/brummer10/screcord"
-
-typedef enum
-{
-   FORM, 
-   REC, 
-   CLIP, 
-   EFFECTS_OUTPUT,
-   EFFECTS_INPUT,
-   EFFECTS_OUTPUT1,
-   EFFECTS_INPUT1,
-} PortIndex;
+#include "sc_record.h"
 
 ////////////////////////////// LOCAL INCLUDES //////////////////////////
 

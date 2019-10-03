@@ -23,6 +23,7 @@
 @prefix lv2: <http://lv2plug.in/ns/lv2core#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix guiext: <http://lv2plug.in/ns/extensions/ui#>.
 
 <https://github.com/brummer10#me>
 	a foaf:Person ;
@@ -42,6 +43,8 @@
     lv2:minorVersion 0;
     lv2:microVersion 1;
 
+  guiext:ui <https://github.com/brummer10/screcord_ui#mono_record>;
+
     lv2:port [
         a lv2:InputPort ,
             lv2:ControlPort ;
@@ -81,18 +84,34 @@
         lv2:minimum 0.0 ;
         lv2:maximum 1.0 ;
     ] , [
+        a lv2:OutputPort ,
+            lv2:ControlPort ;
+        lv2:index 3 ;
+        lv2:symbol "LMETER" ;
+        lv2:name "VUMETER" ;
+        lv2:default -70.0 ;
+        lv2:minimum -70.0 ;
+        lv2:maximum 4.0 ;
+    ] , [
         a lv2:AudioPort ,
             lv2:OutputPort ;
-        lv2:index 3 ;
+        lv2:index 4 ;
         lv2:symbol "out" ;
         lv2:name "Out"
     ] , [
         a lv2:AudioPort ,
             lv2:InputPort ;
-        lv2:index 4 ;
+        lv2:index 5 ;
         lv2:symbol "in" ;
         lv2:name "In" ;
     ].
+
+<https://github.com/brummer10/screcord_ui#mono_record>
+  a guiext:X11UI;
+  guiext:binary <sc_record_ui.so>;
+        lv2:extensionData guiext::idle ; 
+        lv2:requiredFeature guiext:makeResident;
+  .
 
 <https://github.com/brummer10/screcord#stereo_record>
     a lv2:Plugin ,
@@ -106,12 +125,14 @@
     lv2:minorVersion 0;
     lv2:microVersion 1;
 
+  guiext:ui <https://github.com/brummer10/screcord_ui#stereo_record>;
+
     lv2:port [
         a lv2:InputPort ,
             lv2:ControlPort ;
         lv2:index 0 ;
-        lv2:symbol "FORMAT" ;
-        lv2:name "FORMAT";
+        lv2:symbol "FORM" ;
+        lv2:name "FORM";
         lv2:default 0;
         lv2:minimum 0 ;
         lv2:maximum 1 ;
@@ -145,27 +166,52 @@
         lv2:minimum 0.0 ;
         lv2:maximum 1.0 ;
     ] , [
+        a lv2:OutputPort ,
+            lv2:ControlPort ;
+        lv2:index 3 ;
+        lv2:symbol "LMETER" ;
+        lv2:name "L-METER" ;
+        lv2:default -70.0 ;
+        lv2:minimum -70.0 ;
+        lv2:maximum 4.0 ;
+    ] , [
         a lv2:AudioPort ,
             lv2:OutputPort ;
-        lv2:index 3 ;
+        lv2:index 4 ;
         lv2:symbol "out" ;
         lv2:name "Out"
     ] , [
         a lv2:AudioPort ,
             lv2:InputPort ;
-        lv2:index 4 ;
+        lv2:index 5 ;
         lv2:symbol "in" ;
         lv2:name "In" ;
     ] , [
+        a lv2:OutputPort ,
+            lv2:ControlPort ;
+        lv2:index 6 ;
+        lv2:symbol "RMETER" ;
+        lv2:name "R-METER" ;
+        lv2:default -70.0 ;
+        lv2:minimum -70.0 ;
+        lv2:maximum 4.0 ;
+    ] , [
         a lv2:AudioPort ,
             lv2:OutputPort ;
-        lv2:index 5 ;
+        lv2:index 7 ;
         lv2:symbol "out1" ;
         lv2:name "Out1"
     ] , [
         a lv2:AudioPort ,
             lv2:InputPort ;
-        lv2:index 6 ;
+        lv2:index 8 ;
         lv2:symbol "in1" ;
         lv2:name "In1" ;
     ].
+
+<https://github.com/brummer10/screcord_ui#stereo_record>
+  a guiext:X11UI;
+  guiext:binary <sc_record_ui.so>;
+        lv2:extensionData guiext::idle ; 
+        lv2:requiredFeature guiext:makeResident;
+  .
