@@ -92,7 +92,6 @@ static void draw_my_button(void *w_, void* user_data) {
 
     if(w->state==0) {
         cairo_set_line_width(w->crb, 1.0);
-       // use_bg_color_scheme(w, NORMAL_);
         cairo_fill_preserve(w->crb);
         use_bg_color_scheme(w, PRELIGHT_);
     } else if(w->state==1) {
@@ -210,18 +209,20 @@ static LV2UI_Handle instantiate(const struct _LV2UI_Descriptor * descriptor,
     widget_get_png(ui->win, LDVAR(record_png));
     // connect the expose func
     ui->win->func.expose_callback = draw_window;
+    // create a combobox
     ui->widget[0] = add_combobox(ui->win, "", 60, 55, 100, 30);
+    // add entrys to the combobox
     combobox_add_entry(ui->widget[0],"wav");
     combobox_add_entry(ui->widget[0],"ogg");
+    // store the Port Index in the Widget_t data field
     ui->widget[0]->data = FORM;
+    // store a pointer to the X11_UI struct in the parent_struct Widget_t field
     ui->widget[0]->parent_struct = ui;
+    // connect the value changed callback with the write_function
     ui->widget[0]->func.value_changed_callback = value_changed;
-    //combobox_set_active_entry(w, 1);
-
-
     // create a toggle button
     ui->widget[1] = add_toggle_button(ui->win, "REC", 170, 55, 110, 30);
-    // set resize mode for the toggle button to Aspect ratio
+    // set resize mode for the toggle button to CENTER ratio
     ui->widget[1]->scale.gravity = CENTER;
     // store the Port Index in the Widget_t data field
     ui->widget[1]->data = REC;
@@ -229,15 +230,16 @@ static LV2UI_Handle instantiate(const struct _LV2UI_Descriptor * descriptor,
     ui->widget[1]->parent_struct = ui;
     // connect the value changed callback with the write_function
     ui->widget[1]->func.value_changed_callback = value_changed;
+    // connect the expose func
     ui->widget[1]->func.expose_callback = draw_my_button;
-    ui->widget[1]->func.adj_callback = transparent_draw;
-
+    // create a toggle button
     ui->widget[2] = add_toggle_button(ui->win, "", 302, 18, 25, 20);
     // store the Port Index in the Widget_t data field
     ui->widget[2]->data = CLIP;
+    // set adjustment to be of type CL_METER
     set_adjustment(ui->widget[2]->adj,0.0, 0.0, 0.0, 1.0, 1.0, CL_METER);
     ui->widget[2]->func.expose_callback = draw_my_button;
-    // disable callbacks
+    // disable unwanted callbacks
     ui->widget[2]->func.enter_callback = dummy_callback;
     ui->widget[2]->func.leave_callback = dummy_callback;
     ui->widget[2]->func.button_press_callback = dummy1_callback;
@@ -248,16 +250,20 @@ static LV2UI_Handle instantiate(const struct _LV2UI_Descriptor * descriptor,
     ui->widget[3] = add_vmeter(ui->win, "LMeter", true, 300, 39, 10, 205);
     // store the port index in the Widget_t data field
     ui->widget[3]->data = LMETER;
+    // set resize mode for the toggle button to CENTER ratio
     ui->widget[3]->scale.gravity = CENTER;
+    // fetch the meter scale widget and set gravity to CENTER ratio
     int a = childlist_find_child(ui->main.childlist, ui->widget[3]);
     ui->main.childlist->childs[a+1]->scale.gravity = CENTER;
     // create a meter widget
     ui->widget[4] = add_vmeter(ui->win, "RMeter", false, 320, 39, 10, 205);
     // store the port index in the Widget_t data field
     ui->widget[4]->data = RMETER;
+    // set resize mode for the toggle button to CENTER ratio
     ui->widget[4]->scale.gravity = CENTER;
     // finally map all Widgets on screen
     widget_show_all(ui->win);
+    // hide 2. meter on mono UI
     if (strstr(plugin_uri, "stereo") == NULL)
         widget_hide(ui->widget[4]);
     // set the widget pointer to the X11 Window from the toplevel Widget_t
