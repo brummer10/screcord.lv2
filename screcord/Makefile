@@ -32,7 +32,7 @@
 	# set bundle name
 	NAME = sc_record
 	BUNDLE = $(NAME).lv2
-	VER = 0.1
+	VER = 0.2
 
 	LIB_DIR := ../Xputty/Build/
 	HEADER_DIR := $(LIB_DIR)include/
