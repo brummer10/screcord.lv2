@@ -7,7 +7,7 @@ SUBDIR := $(filter-out  sc_record.lv2/, $(SUBDIR))
 $(MAKECMDGOALS) recurse: $(SUBDIR)
 
 $(SUBDIR):
-	@exec $(MAKE) -C $@ $(MAKECMDGOALS)
+	@exec $(MAKE) -j 1 -C $@ $(MAKECMDGOALS)
 
 doc:
 	@rm -rf ./docs
