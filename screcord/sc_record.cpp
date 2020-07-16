@@ -27,6 +27,7 @@
 #include <cstdlib>
 #include <cmath>
 #include <climits>
+#include <cstring>
 
 #include <sndfile.hh>
 
@@ -63,6 +64,7 @@ public:
   // LV2 Descriptor
   static const LV2_Descriptor descriptor;
   static const LV2_Descriptor descriptor1;
+  LV2_State_Make_Path* make_path;
   // static wrapper to private functions
   static void deactivate(LV2_Handle instance);
   static void cleanup(LV2_Handle instance);
@@ -100,12 +102,14 @@ void SCrecord::init_dsp_(uint32_t rate)
 {
   record = new screcord::SCapture(1);
   record->set_samplerate(rate, record); // init the DSP class
+  record->make_path = make_path;
 }
 
 void SCrecord::init_dsp_st(uint32_t rate)
 {
   record = new screcord::SCapture(2);
   record->set_samplerate(rate, record); // init the DSP class
+  record->make_path = make_path;
 }
 
 // connect the Ports used by the plug-in class
@@ -180,6 +184,20 @@ SCrecord::instantiate(const LV2_Descriptor* descriptor,
       return NULL;
     }
 
+  for (int32_t i = 0; features[i]; ++i)
+    {
+      if (!strcmp(features[i]->URI, LV2_STATE__makePath))
+        {
+          self->make_path = (LV2_State_Make_Path*)features[i]->data;
+          char *Path = self->make_path->path(self->make_path->handle, "lv2record/");
+          fprintf(stderr, "%s\n", Path);
+        }
+    }
+  if (!self->make_path)
+    {
+      fprintf(stderr, "Missing feature LV2_URID__makePath.\n");
+    }
+
   self->init_dsp_((uint32_t)rate);
 
   return (LV2_Handle)self;
@@ -195,6 +213,20 @@ SCrecord::instantiate_st(const LV2_Descriptor* descriptor,
   if (!self)
     {
       return NULL;
+    }
+
+  for (int32_t i = 0; features[i]; ++i)
+    {
+      if (!strcmp(features[i]->URI, LV2_STATE__makePath))
+        {
+          self->make_path = (LV2_State_Make_Path*)features[i]->data;
+          char *Path = self->make_path->path(self->make_path->handle, "lv2record/");
+          fprintf(stderr, "%s\n", Path);
+        }
+    }
+  if (!self->make_path)
+    {
+      fprintf(stderr, "Missing feature LV2_URID__makePath.\n");
     }
 
   self->init_dsp_st((uint32_t)rate);

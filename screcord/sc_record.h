@@ -18,6 +18,7 @@
  */
 
 #include <lv2.h>
+#include "lv2/lv2plug.in/ns/ext/state/state.h"
 
 #define SCPLUGIN_URI "https://github.com/brummer10/screcord"
 #define SCPLUGIN_UI_URI "https://github.com/brummer10/screcord_ui"

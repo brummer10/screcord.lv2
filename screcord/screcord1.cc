@@ -75,6 +75,8 @@ private:
     static void *run_thread(void* p);
 
 public:
+    LV2_State_Make_Path* make_path;
+    std::string pPath;
     static void clear_state(SCapture*);
     static int  activate_plugin(bool start, SCapture*);
     static void set_samplerate(unsigned int samplingFreq, SCapture*);
@@ -103,6 +105,7 @@ SCapture::SCapture(int channel_)
       keep_stream(false),
       mem_allocated(false),
       err(false) {
+    pPath = "";
     sem_init(&m_trig, 0, 0);
     start_thread();
 }
@@ -115,9 +118,17 @@ SCapture::~SCapture() {
 inline std::string SCapture::get_ffilename() {
     struct stat buffer;
     struct stat sb;
-    std::string pPath = getenv("HOME");
+    std::string pPath;
+    if (make_path) {
+        pPath = make_path->path(make_path->handle, "/lv2record");
+    }
+    if (!pPath.empty() && pPath.compare("/lv2record") != 0) {
+        pPath +="/";
+    } else {
+        pPath = getenv("HOME");
+        pPath +="/lv2record/";
+    }
     is_wav = int(*fformat) ? false : true;
-    pPath +="/lv2record/";
     if (!(stat(pPath.c_str(), &sb) == 0 && S_ISDIR(sb.st_mode))) {
         mkdir(pPath.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
     }

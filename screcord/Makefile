@@ -34,7 +34,7 @@
 	BUNDLE = $(NAME).lv2
 	VER = 0.2
 
-	LIB_DIR := ../Xputty/Build/
+	LIB_DIR := ../libxputty/libxputty/
 	HEADER_DIR := $(LIB_DIR)include/
 
 	# set compile flags
