@@ -1,3 +1,4 @@
-[submodule "Xputty"]
-	path = Xputty
-	url = https://github.com/brummer10/Xputty.git
+
+[submodule "libxputty"]
+	path = libxputty
+	url = https://github.com/brummer10/libxputty.git
