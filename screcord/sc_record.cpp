@@ -189,8 +189,6 @@ SCrecord::instantiate(const LV2_Descriptor* descriptor,
       if (!strcmp(features[i]->URI, LV2_STATE__makePath))
         {
           self->make_path = (LV2_State_Make_Path*)features[i]->data;
-          char *Path = self->make_path->path(self->make_path->handle, "lv2record/");
-          fprintf(stderr, "%s\n", Path);
         }
     }
   if (!self->make_path)
@@ -220,8 +218,6 @@ SCrecord::instantiate_st(const LV2_Descriptor* descriptor,
       if (!strcmp(features[i]->URI, LV2_STATE__makePath))
         {
           self->make_path = (LV2_State_Make_Path*)features[i]->data;
-          char *Path = self->make_path->path(self->make_path->handle, "lv2record/");
-          fprintf(stderr, "%s\n", Path);
         }
     }
   if (!self->make_path)

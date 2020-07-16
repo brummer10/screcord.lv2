@@ -76,7 +76,6 @@ private:
 
 public:
     LV2_State_Make_Path* make_path;
-    std::string pPath;
     static void clear_state(SCapture*);
     static int  activate_plugin(bool start, SCapture*);
     static void set_samplerate(unsigned int samplingFreq, SCapture*);
@@ -105,7 +104,6 @@ SCapture::SCapture(int channel_)
       keep_stream(false),
       mem_allocated(false),
       err(false) {
-    pPath = "";
     sem_init(&m_trig, 0, 0);
     start_thread();
 }
