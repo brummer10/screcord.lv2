@@ -117,10 +117,12 @@ inline std::string SCapture::get_ffilename() {
     struct stat buffer;
     struct stat sb;
     std::string pPath;
+    const char *Path = NULL;
     if (make_path) {
-        pPath = make_path->path(make_path->handle, "/lv2record");
+        Path = make_path->path(make_path->handle, "lv2record");
     }
-    if (!pPath.empty() && pPath.compare("/lv2record") != 0) {
+    if ((Path != NULL) &&(strcmp(Path,"lv2record") != 0)) {
+        pPath = Path;
         pPath +="/";
     } else {
         pPath = getenv("HOME");
@@ -136,6 +138,7 @@ inline std::string SCapture::get_ffilename() {
         name.replace(name.begin()+11,name.end()-4,to_string(i)); 
         i+=1;
     }
+    fprintf(stderr, "%s%s\n", pPath.c_str(), name.c_str());
     return pPath+name;
 }
 
