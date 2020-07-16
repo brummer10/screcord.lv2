@@ -32,10 +32,12 @@ typedef struct {
     Widget_t *win;
     Widget_t *widget[CONTROLS];
     int block_event;
+    char tolltiptext[250];
 
     void *controller;
     LV2UI_Write_Function write_function;
     LV2UI_Resize* resize;
+    LV2_State_Make_Path* make_path;
 } X11_UI;
 
 static void set_colors(Xputty *app) {
@@ -172,6 +174,25 @@ static void value_changed(void *w_, void* user_data) {
     ui->block_event = -1;
 }
 
+static void show_path(void *w_, void* user_data) {
+    Widget_t *w = (Widget_t*)w_;
+    X11_UI* ui = (X11_UI*)w->parent_struct;
+    memset(ui->tolltiptext, 0, 250 * (sizeof ui->tolltiptext[0]));
+    const char *Path = NULL;
+    strcpy(ui->tolltiptext,"Record to: ");
+    if (ui->make_path) {
+        Path =  ui->make_path->path(ui->make_path->handle, "lv2record");
+        strncat(ui->tolltiptext, Path, 249 - strlen(ui->tolltiptext));
+    } 
+    if ((Path == NULL) || (strcmp(Path,"lv2record") == 0)) {
+        Path = getenv("HOME");
+        strncat(ui->tolltiptext, Path, 249 - strlen(ui->tolltiptext));
+        strncat(ui->tolltiptext,"/lv2record/", 249 - strlen(ui->tolltiptext));
+    }
+    Path = ui->tolltiptext;
+    tooltip_set_text(w, Path);
+}
+
 void dummy1_callback(void *w_, void* _data, void* user_data) {
     
 }
@@ -204,6 +225,8 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor * descriptor,
             ui->parentXwindow = features[i]->data;
         } else if (!strcmp(features[i]->URI, LV2_UI__resize)) {
             resize = (LV2UI_Resize*)features[i]->data;
+        } else if (!strcmp(features[i]->URI, LV2_STATE__makePath)) {
+          ui->make_path = (LV2_State_Make_Path*)features[i]->data;
         }
     }
 
@@ -221,6 +244,7 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor * descriptor,
     widget_get_png(ui->win, LDVAR(record_png));
     // connect the expose func
     ui->win->func.expose_callback = draw_window;
+    memset(ui->tolltiptext, 0, 250 * (sizeof ui->tolltiptext[0]));
     // create a combobox
     ui->widget[0] = add_combobox(ui->win, "", 60, 55, 100, 30);
     // add entrys to the combobox
@@ -236,6 +260,8 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor * descriptor,
     ui->widget[1] = add_toggle_button(ui->win, "REC", 170, 55, 110, 30);
     // set resize mode for the toggle button to CENTER ratio
     ui->widget[1]->scale.gravity = CENTER;
+    ui->widget[1]->flags |=HAS_TOOLTIP;
+    add_tooltip(ui->widget[1], "");
     // store the Port Index in the Widget_t data field
     ui->widget[1]->data = REC;
     // store a pointer to the X11_UI struct in the parent_struct Widget_t field
@@ -244,6 +270,8 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor * descriptor,
     ui->widget[1]->func.value_changed_callback = value_changed;
     // connect the expose func
     ui->widget[1]->func.expose_callback = draw_my_button;
+    // connect the enter func
+    ui->widget[1]->func.enter_callback = show_path;
     // create a toggle button
     ui->widget[2] = add_toggle_button(ui->win, "", 302, 18, 25, 20);
     // store the Port Index in the Widget_t data field
