@@ -138,7 +138,6 @@ inline std::string SCapture::get_ffilename() {
         name.replace(name.begin()+11,name.end()-4,to_string(i)); 
         i+=1;
     }
-    fprintf(stderr, "%s%s\n", pPath.c_str(), name.c_str());
     return pPath+name;
 }
 
