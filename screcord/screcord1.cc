@@ -118,6 +118,8 @@ inline std::string SCapture::get_ffilename() {
     struct stat sb;
     std::string pPath;
     const char *Path = NULL;
+
+#ifndef  __MOD_DEVICES__
     if (make_path) {
         Path = make_path->path(make_path->handle, "lv2record");
     }
@@ -128,11 +130,19 @@ inline std::string SCapture::get_ffilename() {
         pPath = getenv("HOME");
         pPath +="/lv2record/";
     }
+#else
+    pPath = "/data/user-files/Audio Recordings/lv2record/";
+#endif
     is_wav = int(*fformat) ? false : true;
     if (!(stat(pPath.c_str(), &sb) == 0 && S_ISDIR(sb.st_mode))) {
         mkdir(pPath.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
     }
+
+#ifndef  __MOD_DEVICES__
     std::string name = is_wav ?  "lv2_session0.wav" : "lv2_session0.ogg" ;
+#else
+    std::string name = is_wav ?  "mod_session0.wav" : "mod_session0.ogg" ;
+#endif
     int i = 0;
     while (stat ((pPath+name).c_str(), &buffer) == 0) {
         name.replace(name.begin()+11,name.end()-4,to_string(i)); 

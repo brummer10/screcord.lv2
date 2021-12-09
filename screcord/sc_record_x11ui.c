@@ -260,8 +260,9 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor * descriptor,
     ui->widget[1] = add_toggle_button(ui->win, "REC", 170, 55, 110, 30);
     // set resize mode for the toggle button to CENTER ratio
     ui->widget[1]->scale.gravity = CENTER;
+    // add tooltip widget to show path were recorded files were saved
     ui->widget[1]->flags |=HAS_TOOLTIP;
-    add_tooltip(ui->widget[1], "");
+    add_tooltip(ui->widget[1], "Record to: ");
     // store the Port Index in the Widget_t data field
     ui->widget[1]->data = REC;
     // store a pointer to the X11_UI struct in the parent_struct Widget_t field

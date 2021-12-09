@@ -183,7 +183,7 @@ SCrecord::instantiate(const LV2_Descriptor* descriptor,
     {
       return NULL;
     }
-
+#ifndef  __MOD_DEVICES__
   for (int32_t i = 0; features[i]; ++i)
     {
       if (!strcmp(features[i]->URI, LV2_STATE__makePath))
@@ -195,7 +195,7 @@ SCrecord::instantiate(const LV2_Descriptor* descriptor,
     {
       fprintf(stderr, "Missing feature LV2_URID__makePath.\n");
     }
-
+#endif
   self->init_dsp_((uint32_t)rate);
 
   return (LV2_Handle)self;

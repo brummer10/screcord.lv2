@@ -1,0 +1,199 @@
+/* SKINS */
+.mod-head-model-001{{{cns}}} {
+    border-radius: 20px;
+}
+.mod-head-model-001-0550{{{cns}}} {
+    background-image: url(/resources/heads/model-001/model-0551.png{{{ns}}});
+    background-position: center center;
+    background-repeat: no-repeat;
+    font-family: Helvetica,Arial,Sans-serif;
+    height: 259px;
+    position: relative;
+    width: 261px;
+}
+
+/* THE AUTHOR */
+.mod-head-model-001{{{cns}}} .mod-plugin-brand h1 {
+    bottom: 90px;
+    color: #fff;
+    font-size: 14px;
+    left: 54px;
+    line-height: 1;
+    margin: 0;
+    position: absolute;
+}
+
+/* PLUGIN'S NAME */
+.mod-head-model-001{{{cns}}} .mod-plugin-name h1 {
+    bottom: 50px;
+    color: #fff;
+    font-size: 18px;
+    left: 54px;
+    line-height: 1;
+    margin: 0;
+    position: absolute;
+}
+
+/* CONTROLS */
+.mod-head-model-001{{{cns}}} .mod-control-group {
+    bottom: 149px;
+    color: #fff;
+    font-size: 10px;
+    height: 73px;
+    left: 34px;
+    position: absolute;
+    right: 14px;
+    top: 37px;
+}
+
+.mod-head-model-001{{{cns}}} .mod-control-group > div {
+    margin-right: 2px;
+}
+
+/* SWITCH ON/OFF GENERAL */
+.mod-head-model-001{{{cns}}} .mod-switch {
+    cursor: pointer;
+    float: left;
+    height: 60px;
+    position: relative;
+    margin-left: 5px;
+    width: 128px;
+}
+
+.mod-head-model-001{{{cns}}} .mod-switch-image {
+    background-image: url(/resources/switches/big_button.png{{{ns}}});
+    background-position: left 0px;
+    background-repeat: no-repeat;
+    background-size: auto 60px;
+    height: 60px;
+    width: 128px;
+}
+
+.mod-head-model-001{{{cns}}} .mod-switch-image.on {
+    background-position: -82px 0px;
+}
+
+.mod-head-model-001{{{cns}}} .mod-switch-image.off {
+    background-position: -9px 0px;
+}
+
+/* SWITCH ON/OFF - 0550 */
+.mod-head-model-001-0550{{{cns}}} .mod-switch {
+    width: 128px;
+}
+
+.mod-head-model-001{{{cns}}} .mod-led {
+    float: left;
+    height: 64px;
+    overflow: hidden;
+    position: relative;
+    margin-left: -6px;
+    text-align: center;
+    width: 64px;
+}
+
+.mod-head-model-001{{{cns}}} .mod-led .mod-led-image {
+    background-image: url(/resources/switches/LED.png{{{ns}}});
+    background-position: left 0px;
+    background-repeat: no-repeat;
+    background-size: auto 64px;
+    margin-left: 0px;
+    height: 64px;
+    width: 64px;
+    z-index: 2;
+}
+
+.mod-head-model-001{{{cns}}} .mod-led .mod-led-title {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    left: 0;
+    position: absolute;
+    right: 0;
+    text-transform: uppercase;
+    top: 0;
+    z-index: 1;
+}
+
+.mod-head-model-001{{{cns}}} .mod-meter {
+    float: left;
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    margin-left: -4px;
+    margin-top: -8px;
+    width: 10px;
+}
+
+.mod-head-model-001{{{cns}}} .mod-meter .mod-meter-image {
+    background-image:url(/resources/knobs/meter.png{{{ns}}});
+    background-position: left 0px;
+    background-repeat: no-repeat;
+    background-size: auto auto;
+    height: 200px;
+    width: 10px;
+    margin-top: 3px;
+    position: relative;
+    z-index: 2;
+}
+
+/* ENUMERATED LIST */
+.mod-head-model-001{{{cns}}} .mod-enumerated {
+    color: #000;
+    display: inline-block;
+    margin-top: 40px;
+    overflow: hidden;
+    position: absolute;
+    right: 25px;
+    top: 60px;
+    width: 180px;
+}
+
+.mod-head-model-001{{{cns}}} .mod-enumerated .mod-enumerated-selected {
+    background: rgba(255,255,255,.85);
+    border-radius: 4px;
+    box-shadow:inset 1px 1px 10px #000;
+    font-size: 14px;
+    height: 34px;
+    line-height: 2.5;
+    margin-right: 8px;
+    overflow: hidden;
+    padding: 0 9px;
+}
+
+/* WHEN IS HOVER */
+.mod-head-model-001{{{cns}}} .mod-enumerated:hover .mod-enumerated-selected {
+    border-radius: 4px 4px 0 0;
+}
+
+/* THE LIST OF OPTIONS */
+.mod-head-model-001{{{cns}}} .mod-enumerated .mod-enumerated-list {
+    background: rgba(255,255,255,.85);
+    display: none;
+    font-weight: bold;
+    height: 69px;
+    overflow: auto;
+    position: relative;
+    width: 180px;
+    z-index: 3;
+}
+
+.mod-head-model-001{{{cns}}} .mod-enumerated .mod-enumerated-list > div {
+    padding: 3px 9px;
+}
+
+.mod-head-model-001{{{cns}}} .mod-enumerated .mod-enumerated-list > div:hover {
+    background: rgba(0,0,0,.35);
+    cursor: pointer;
+}
+
+/* SEPARATOR */
+.mod-head-model-001{{{cns}}} .mod-separator {
+    background: #000;
+    display: inline-block;
+    float: left;
+    height: 69px;
+    margin-top: 2px;
+    width: 1px;
+}
