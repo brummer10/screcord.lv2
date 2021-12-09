@@ -117,9 +117,9 @@ inline std::string SCapture::get_ffilename() {
     struct stat buffer;
     struct stat sb;
     std::string pPath;
-    const char *Path = NULL;
 
 #ifndef  __MOD_DEVICES__
+    const char *Path = NULL;
     if (make_path) {
         Path = make_path->path(make_path->handle, "lv2record");
     }
