@@ -70,9 +70,9 @@ Lv2 capture plugin, save audio stream as wav or ogg files.
         lv2:name "REC";
         lv2:portProperty lv2:toggled;
         lv2:portProperty lv2:integer;
-        lv2:default 0.0 ;
-        lv2:minimum 0.0 ;
-        lv2:maximum 1.0 ;
+        lv2:default 0 ;
+        lv2:minimum 0 ;
+        lv2:maximum 1 ;
         rdfs:comment "recorded files goes to /data/user-files/Audio Recordings/lv2record/" ,
         "Aufnahmen gehen nach /data/user-files/Audio Recordings/lv2record/ "@de ,
         "Les fichiers sont enregistrés dans /data/user-files/Audio Recordings/lv2record/ "@fr;
@@ -84,9 +84,9 @@ Lv2 capture plugin, save audio stream as wav or ogg files.
         lv2:name "CLIP";
         lv2:portProperty lv2:toggled;
         lv2:portProperty lv2:integer;
-        lv2:default 0.0 ;
-        lv2:minimum 0.0 ;
-        lv2:maximum 1.0 ;
+        lv2:default 0 ;
+        lv2:minimum 0 ;
+        lv2:maximum 1 ;
     ] , [
         a lv2:OutputPort ,
             lv2:ControlPort ;
@@ -119,8 +119,12 @@ Lv2 capture plugin, save audio stream as wav or ogg files.
     lv2:project <https://github.com/brummer10/sc_record> ;
     lv2:optionalFeature lv2:hardRTCapable ;
 
-    lv2:minorVersion 0;
-    lv2:microVersion 2;
+    lv2:minorVersion 1;
+    lv2:microVersion 0;
+
+rdfs:comment """
+Lv2 capture plugin, save audio stream as wav or ogg files.
+""";
 
     lv2:port [
         a lv2:InputPort ,
@@ -143,9 +147,9 @@ Lv2 capture plugin, save audio stream as wav or ogg files.
         lv2:name "REC";
         lv2:portProperty lv2:toggled;
         lv2:portProperty lv2:integer;
-        lv2:default 0.0 ;
-        lv2:minimum 0.0 ;
-        lv2:maximum 1.0 ;
+        lv2:default 0 ;
+        lv2:minimum 0 ;
+        lv2:maximum 1 ;
         rdfs:comment "recorded files goes to /data/user-files/Audio Recordings/lv2record/ " ,
         "Aufnahmen gehen nach /data/user-files/Audio Recordings/lv2record/ "@de ,
         "Les fichiers sont enregistrés dans /data/user-files/Audio Recordings/lv2record/ "@fr;
@@ -157,9 +161,9 @@ Lv2 capture plugin, save audio stream as wav or ogg files.
         lv2:name "CLIP";
         lv2:portProperty lv2:toggled;
         lv2:portProperty lv2:integer;
-        lv2:default 0.0 ;
-        lv2:minimum 0.0 ;
-        lv2:maximum 1.0 ;
+        lv2:default 0 ;
+        lv2:minimum 0 ;
+        lv2:maximum 1 ;
     ] , [
         a lv2:OutputPort ,
             lv2:ControlPort ;
