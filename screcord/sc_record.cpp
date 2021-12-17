@@ -42,6 +42,9 @@
 class SCrecord
 {
 private:
+  LV2_URID_Map*        map;
+  int32_t     rt_prio;
+  int32_t     rt_policy;
   // pointer to buffer
   float*      output;
   float*      input;
@@ -84,6 +87,8 @@ public:
 
 // constructor
 SCrecord::SCrecord() :
+  rt_prio(0),
+  rt_policy(0),
   output(NULL),
   input(NULL),
   output1(NULL),
@@ -104,6 +109,7 @@ void SCrecord::init_dsp_(uint32_t rate)
   record = new screcord::SCapture(1);
   record->set_samplerate(rate, record); // init the DSP class
   record->make_path = make_path;
+  record->set_thread_prio(rt_prio, rt_policy);
 }
 
 void SCrecord::init_dsp_st(uint32_t rate)
@@ -111,6 +117,7 @@ void SCrecord::init_dsp_st(uint32_t rate)
   record = new screcord::SCapture(2);
   record->set_samplerate(rate, record); // init the DSP class
   record->make_path = make_path;
+  record->set_thread_prio(rt_prio, rt_policy);
 }
 
 // connect the Ports used by the plug-in class
@@ -184,14 +191,50 @@ SCrecord::instantiate(const LV2_Descriptor* descriptor,
     {
       return NULL;
     }
-#ifndef  __MOD_DEVICES__
+  
+  const LV2_Options_Option* options  = NULL;
+
   for (int32_t i = 0; features[i]; ++i)
     {
-      if (!strcmp(features[i]->URI, LV2_STATE__makePath))
+      if (!strcmp(features[i]->URI, LV2_URID__map))
+        {
+          self->map = (LV2_URID_Map*)features[i]->data;
+        } 
+      else if (!strcmp (features[i]->URI, LV2_OPTIONS__options))
+        {
+          options = (const LV2_Options_Option*)features[i]->data;
+        }
+      else if (!strcmp(features[i]->URI, LV2_STATE__makePath))
         {
           self->make_path = (LV2_State_Make_Path*)features[i]->data;
         }
     }
+  if (self->map)
+    {
+      if (options)
+        {
+          LV2_URID atom_Int  = self->map->map (self->map->handle, LV2_ATOM__Int);
+          LV2_URID tshed_pol = self->map->map (self->map->handle, "http://ardour.org/lv2/threads/#schedPolicy");
+          LV2_URID tshed_pri = self->map->map (self->map->handle, "http://ardour.org/lv2/threads/#schedPriority");
+          for (const LV2_Options_Option* o = options; o->key; ++o)
+            {
+            if (o->context == LV2_OPTIONS_INSTANCE &&
+                o->key == tshed_pol &&
+                o->type == atom_Int)
+              {
+                self->rt_policy = *(const int32_t*)o->value;
+              }
+            if (o->context == LV2_OPTIONS_INSTANCE &&
+                o->key == tshed_pri &&
+                o->type == atom_Int)
+              {
+                self->rt_prio = *(const int32_t*)o->value;
+              }
+           }
+        }
+    }
+
+#ifndef  __MOD_DEVICES__
   if (!self->make_path)
     {
       fprintf(stderr, "Missing feature LV2_URID__makePath.\n");
@@ -213,15 +256,50 @@ SCrecord::instantiate_st(const LV2_Descriptor* descriptor,
     {
       return NULL;
     }
+  
+  const LV2_Options_Option* options  = NULL;
 
-#ifndef  __MOD_DEVICES__
   for (int32_t i = 0; features[i]; ++i)
     {
-      if (!strcmp(features[i]->URI, LV2_STATE__makePath))
+      if (!strcmp(features[i]->URI, LV2_URID__map))
+        {
+          self->map = (LV2_URID_Map*)features[i]->data;
+        } 
+      else if (!strcmp (features[i]->URI, LV2_OPTIONS__options))
+        {
+          options = (const LV2_Options_Option*)features[i]->data;
+        }
+      else if (!strcmp(features[i]->URI, LV2_STATE__makePath))
         {
           self->make_path = (LV2_State_Make_Path*)features[i]->data;
         }
     }
+  if (self->map)
+    {
+      if (options)
+        {
+          LV2_URID atom_Int  = self->map->map (self->map->handle, LV2_ATOM__Int);
+          LV2_URID tshed_pol = self->map->map (self->map->handle, "http://ardour.org/lv2/threads/#schedPolicy");
+          LV2_URID tshed_pri = self->map->map (self->map->handle, "http://ardour.org/lv2/threads/#schedPriority");
+          for (const LV2_Options_Option* o = options; o->key; ++o)
+            {
+            if (o->context == LV2_OPTIONS_INSTANCE &&
+                o->key == tshed_pol &&
+                o->type == atom_Int)
+              {
+                self->rt_policy = *(const int32_t*)o->value;
+              }
+            if (o->context == LV2_OPTIONS_INSTANCE &&
+                o->key == tshed_pri &&
+                o->type == atom_Int)
+              {
+                self->rt_prio = *(const int32_t*)o->value;
+              }
+           }
+        }
+    }
+
+#ifndef  __MOD_DEVICES__
   if (!self->make_path)
     {
       fprintf(stderr, "Missing feature LV2_URID__makePath.\n");

@@ -46,6 +46,8 @@ private:
     float           *tape;
     sem_t           m_trig;
     pthread_t       m_pthr;
+    int32_t         rt_prio;
+    int32_t         rt_policy;
     volatile bool   keep_stream;
     bool            mem_allocated;
     bool            is_wav;
@@ -76,6 +78,7 @@ private:
 
 public:
     LV2_State_Make_Path* make_path;
+    void        set_thread_prio(int32_t prio, int32_t policy);
     static void clear_state(SCapture*);
     static int  activate_plugin(bool start, SCapture*);
     static void set_samplerate(unsigned int samplingFreq, SCapture*);
@@ -101,6 +104,8 @@ SCapture::SCapture(int channel_)
       fRec1(0),
       tape(fRec0),
       m_pthr(0),
+      rt_prio(0),
+      rt_policy(0),
       keep_stream(false),
       mem_allocated(false),
       err(false) {
@@ -167,6 +172,11 @@ void SCapture::disc_stream() {
     }
 }
 
+void SCapture::set_thread_prio(int32_t prio, int32_t policy) {
+    rt_prio = prio;
+    rt_policy = policy;
+}
+
 void *SCapture::run_thread(void *p) {
     (reinterpret_cast<SCapture *>(p))->disc_stream();
     return NULL;
@@ -180,14 +190,19 @@ void SCapture::stop_thread() {
 void SCapture::start_thread() {
     pthread_attr_t      attr;
     struct sched_param  spar;
-    int prio = 0;
-    int priomax = sched_get_priority_max(SCHED_FIFO);
-    if ((priomax/5) > 0) prio = priomax/5;
-    spar.sched_priority = prio;
+    if (rt_prio == 0) {
+        int priomax = sched_get_priority_max(SCHED_FIFO);
+        if ((priomax/5) > 0) rt_prio = priomax/5;
+    }
+    spar.sched_priority = rt_prio;
     pthread_attr_init(&attr);
     pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_JOINABLE );
     pthread_setcancelstate (PTHREAD_CANCEL_ENABLE, NULL);
-    pthread_attr_setschedpolicy(&attr, SCHED_FIFO);
+    if (rt_policy == 0) {
+        pthread_attr_setschedpolicy(&attr, SCHED_FIFO);
+    } else {
+        pthread_attr_setschedpolicy(&attr, rt_policy);
+    }
     pthread_attr_setschedparam(&attr, &spar);
     pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
     pthread_attr_setinheritsched(&attr, PTHREAD_EXPLICIT_SCHED);

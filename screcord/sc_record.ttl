@@ -25,6 +25,7 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix guiext: <http://lv2plug.in/ns/extensions/ui#>.
+@prefix opts:  <http://lv2plug.in/ns/ext/options#> .
 
 <https://github.com/brummer10#me>
 	a foaf:Person ;
@@ -40,6 +41,8 @@
     doap:license <http://opensource.org/licenses/isc> ;
     lv2:project <https://github.com/brummer10/sc_record> ;
     lv2:optionalFeature lv2:hardRTCapable ;
+    opts:supportedOption <http://ardour.org/lv2/threads/#schedPolicy>;
+    opts:supportedOption <http://ardour.org/lv2/threads/#schedPriority>;
     lv2:extensionData state:interface ;
 
     lv2:minorVersion 0;
@@ -123,6 +126,8 @@
     doap:license <http://opensource.org/licenses/isc> ;
     lv2:project <https://github.com/brummer10/sc_record> ;
     lv2:optionalFeature lv2:hardRTCapable ;
+    opts:supportedOption <http://ardour.org/lv2/threads/#schedPolicy>;
+    opts:supportedOption <http://ardour.org/lv2/threads/#schedPriority>;
 
     lv2:minorVersion 0;
     lv2:microVersion 1;
