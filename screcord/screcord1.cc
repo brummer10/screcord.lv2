@@ -191,9 +191,9 @@ void SCapture::start_thread() {
     pthread_attr_t      attr;
     struct sched_param  spar;
     if (rt_prio == 0) {
-        int priomax = sched_get_priority_max(SCHED_FIFO);
-        if ((priomax/5) > 0) rt_prio = priomax/5;
+        rt_prio = sched_get_priority_max(SCHED_FIFO);
     }
+    if ((rt_prio/5) > 0) rt_prio = rt_prio/5;
     spar.sched_priority = rt_prio;
     pthread_attr_init(&attr);
     pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_JOINABLE );
