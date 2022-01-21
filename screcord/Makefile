@@ -29,13 +29,35 @@
 		SSE_CFLAGS =
 	endif
 
+	# check LD version
+	ifneq ($(shell xxd --version 2>&1 | head -n 1 | grep xxd),)
+		USE_XXD = 1
+	else ifneq ($(shell $(LD) --version 2>&1 | head -n 1 | grep LLD),)
+		ifneq ($(shell uname -a | grep  x86_64), )
+			LDEMULATION := elf_x86_64
+		else ifneq ($(shell uname -a | grep amd64), )
+			LDEMULATION := elf_x86_64
+		else ifneq ($(shell uname -a | grep i386), )
+			LDEMULATION := elf_i386
+		endif
+		USE_LDD = 1
+	else ifneq ($(shell gold --version 2>&1 | head -n 1 | grep gold),)
+		LD = gold
+	endif
+
 	# set bundle name
 	NAME = sc_record
 	BUNDLE = $(NAME).lv2
 	VER = 0.2
 
+	RESOURCES_DIR :=./
 	LIB_DIR := ../libxputty/libxputty/
 	HEADER_DIR := $(LIB_DIR)include/
+	RESOURCES := $(wildcard $(RESOURCES_DIR)*.png)
+	RESOURCES_OBJ := $(notdir $(patsubst %.png,%.o,$(RESOURCES)))
+	RESOURCES_LIB := $(notdir $(patsubst %.png,%.a,$(RESOURCES)))
+	RESOURCE_EXTLD := $(notdir $(patsubst %.png,%_png,$(RESOURCES)))
+	RESOURCEHEADER := xresources.h
 
 	# set compile flags
 	CXXFLAGS += -I. -I./dsp  -fPIC -DPIC -O2 -Wall -funroll-loops `pkg-config --cflags sndfile`\
@@ -76,12 +98,32 @@ ifdef ARMCPU
 	@echo $(NONE)
 endif
 
-   #@build resource object files
-$(RES_OBJECTS) : record.png 
-	@echo $(LGREEN)"generate resource files,"$(NONE)
-	ld -r -b binary record.png -o record.o
+$(RESOURCEHEADER): $(RESOURCES_OBJ)
+	rm -f $(RESOURCEHEADER)
+	for f in $(RESOURCE_EXTLD); do \
+		echo 'EXTLD('$${f}')' >> $(RESOURCEHEADER) ; \
+	done
+
+ifdef USE_XXD
+$(RESOURCES_OBJ): $(RESOURCES)
+	@#use this line to regenerate the *.c files from used images
+	@cd $(RESOURCES_DIR) && xxd -i $(patsubst %.o,%.png,$@) > $(patsubst %.o,%.c,$@)
+	$(CC) -c $(RESOURCES_DIR)$(patsubst %.o,%.c,$@) -o $@
+	$(AR) rcs $(patsubst %.o,%.a,$@) $@
+else ifdef USE_LDD
+$(RESOURCES_OBJ): $(RESOURCES)
+	cd $(RESOURCES_DIR) && $(LD) -r -b binary -m $(LDEMULATION) -z noexecstack $(patsubst %.o,%.png,$@) -o ../$@
+	$(AR) rcs $(patsubst %.o,%.a,$@) $@
+	LDFLAGS += -DUSE_LD=1
+else
+$(RESOURCES_OBJ): $(RESOURCES)
+	cd $(RESOURCES_DIR) && $(LD) -r -b binary -z noexecstack --strip-all $(patsubst %.o,%.png,$@) -o ../$@
+	$(AR) rcs $(patsubst %.o,%.a,$@) $@
+	LDFLAGS += -DUSE_LD=1
+endif
 
 clean :
+	rm -f *.a *.o *.so xresources.h
 	@rm -f $(NAME).so
 	@rm -rf ../$(BUNDLE)
 	@rm -rf ./$(RES_OBJECTS)
@@ -108,7 +150,7 @@ uninstall :
 
 $(NAME) : clean $(RES_OBJECTS)
 	$(CXX) $(CXXFLAGS) $(OBJECTS) $(LDFLAGS) -o $(NAME).so
-	$(CC) $(CXXFLAGS) -Wl,-z,nodelete $(GUI_OBJECTS) $(RES_OBJECTS) $(GUI_LDFLAGS) -o $(NAME)_ui.so
+	$(CC) $(CXXFLAGS) -Wl,-z,nodelete $(GUI_OBJECTS) -L. $(RESOURCES_LIB) $(GUI_LDFLAGS) -o $(NAME)_ui.so
 	$(STRIP) -s -x -X -R .note.ABI-tag $(NAME).so
 	$(STRIP) -s -x -X -R .note.ABI-tag $(NAME)_ui.so
 
