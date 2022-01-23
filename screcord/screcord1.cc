@@ -144,13 +144,16 @@ inline std::string SCapture::get_ffilename() {
     }
 
 #ifndef  __MOD_DEVICES__
-    std::string name = is_wav ?  "lv2_session0.wav" : "lv2_session0.ogg" ;
+    std::string name = is_wav ?  "lv2_session000.wav" : "lv2_session000.ogg" ;
 #else
-    std::string name = is_wav ?  "mod_session0.wav" : "mod_session0.ogg" ;
+    std::string name = is_wav ?  "mod_session000.wav" : "mod_session000.ogg" ;
 #endif
     int i = 0;
+    int j = 0;
     while (stat ((pPath+name).c_str(), &buffer) == 0) {
-        name.replace(name.begin()+11,name.end()-4,to_string(i)); 
+        if (i>9) j = 1;
+        if (i>99) j = 2;
+        name.replace(name.begin()+13-j,name.end()-4,to_string(i)); 
         i+=1;
     }
     return pPath+name;
