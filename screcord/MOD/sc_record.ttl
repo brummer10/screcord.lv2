@@ -61,8 +61,8 @@ Developed by Brummer
         lv2:maximum 1 ;
         lv2:portProperty lv2:integer;
         lv2:portProperty lv2:enumeration ;
-        lv2:scalePoint [rdfs:label "*.wav"; rdf:value 0];
-        lv2:scalePoint [rdfs:label "*.ogg"; rdf:value 1];
+        lv2:scalePoint [rdfs:label ".wav"; rdf:value 0];
+        lv2:scalePoint [rdfs:label ".ogg"; rdf:value 1];
     ] , [
         a lv2:InputPort ,
             lv2:ControlPort ;
@@ -145,8 +145,8 @@ Developed by Brummer
         lv2:maximum 1 ;
         lv2:portProperty lv2:integer;
         lv2:portProperty lv2:enumeration ;
-        lv2:scalePoint [rdfs:label "*.wav"; rdf:value 0];
-        lv2:scalePoint [rdfs:label "*.ogg"; rdf:value 1];
+        lv2:scalePoint [rdfs:label ".wav"; rdf:value 0];
+        lv2:scalePoint [rdfs:label ".ogg"; rdf:value 1];
     ] , [
         a lv2:InputPort ,
             lv2:ControlPort ;
