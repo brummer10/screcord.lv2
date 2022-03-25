@@ -3,13 +3,14 @@
     border-radius: 20px;
 }
 .mod-head-model-001-0550{{{cns}}} {
-    background-image: url(/resources/heads/model-001/model-0551.png{{{ns}}});
+    background-image: url(/resources/heads/model-001/RecordMono_Background.webp{{{ns}}});
+    background-size: 345px 237px;
     background-position: center center;
     background-repeat: no-repeat;
     font-family: Helvetica,Arial,Sans-serif;
-    height: 259px;
+    height: 237px;
     position: relative;
-    width: 261px;
+    width: 345px;
 }
 
 /* THE AUTHOR */
@@ -40,10 +41,10 @@
     color: #fff;
     font-size: 10px;
     height: 73px;
-    left: 34px;
+    left: 100px;
     position: absolute;
     right: 14px;
-    top: 37px;
+    top: 120px;
 }
 
 .mod-head-model-001{{{cns}}} .mod-control-group > div {
@@ -54,19 +55,20 @@
 .mod-head-model-001{{{cns}}} .mod-switch {
     cursor: pointer;
     float: left;
-    height: 60px;
+    height: 128px;
     position: relative;
     margin-left: 5px;
-    width: 128px;
+    width: 135px;
 }
 
 .mod-head-model-001{{{cns}}} .mod-switch-image {
-    background-image: url(/resources/switches/big_button.png{{{ns}}});
+    background-image: url(/resources/switches/Record_button.webp{{{ns}}});
     background-position: left 0px;
     background-repeat: no-repeat;
-    background-size: auto 60px;
-    height: 60px;
-    width: 128px;
+    background-size: auto 128px;
+    height: 128px;
+    width: 135px;
+    z-index: 4;
 }
 
 .mod-head-model-001{{{cns}}} .mod-switch-image.on {
@@ -79,28 +81,31 @@
 
 /* SWITCH ON/OFF - 0550 */
 .mod-head-model-001-0550{{{cns}}} .mod-switch {
-    width: 128px;
+    width: 180px;
 }
 
 .mod-head-model-001{{{cns}}} .mod-led {
     float: left;
     height: 64px;
     overflow: hidden;
-    position: relative;
-    margin-left: -6px;
+    position: absolute;
+    margin-top: 50px;
+    margin-left: -55px;
     text-align: center;
     width: 64px;
 }
 
 .mod-head-model-001{{{cns}}} .mod-led .mod-led-image {
-    background-image: url(/resources/switches/LED.png{{{ns}}});
+    background-image: url(/resources/switches/LED.webp{{{ns}}});
     background-position: left 0px;
     background-repeat: no-repeat;
     background-size: auto 64px;
+    position: absolute;
+    margin-top: 5px;
     margin-left: 0px;
     height: 64px;
     width: 64px;
-    z-index: 2;
+    z-index: 3;
 }
 
 .mod-head-model-001{{{cns}}} .mod-led .mod-led-title {
@@ -117,45 +122,45 @@
 
 .mod-head-model-001{{{cns}}} .mod-meter {
     float: left;
-    height: 200px;
+    height: 123px;
     overflow: hidden;
-    position: relative;
+    position: absolute;
     text-align: center;
-    margin-left: 0px;
-    margin-top: -8px;
+    margin-left: 69px;
+    margin-top: -90px;
     width: 10px;
+    border-radius: 5px 5px 0px 0px;
+    box-shadow: 2px 2px 2px 0px #000 inset, -1px -1px 1px 1px #888 inset;
 }
 
 .mod-head-model-001{{{cns}}} .mod-meter .mod-meter-image {
-    background-image:url(/resources/knobs/meter.png{{{ns}}});
+    background-image:url(/resources/knobs/Record_meter.png{{{ns}}});
     background-position: left 0px;
     background-repeat: no-repeat;
-    background-size: auto auto;
-    height: 200px;
+    background-size: auto 124px;
+    height: 124px;
     width: 10px;
-    margin-top: 3px;
+    margin-top: 0px;
     position: relative;
     z-index: 2;
 }
 
 /* ENUMERATED LIST */
 .mod-head-model-001{{{cns}}} .mod-enumerated {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     color: #000;
     display: inline-block;
-    margin-top: 40px;
+    margin-top: -121px;
     overflow: hidden;
     position: absolute;
-    left: 5px;
-    top: 60px;
-    width: 180px;
+    left: 45px;
+    top: -10px;
+    width: 80px;
 }
 
 .mod-head-model-001{{{cns}}} .mod-enumerated .mod-enumerated-selected {
-    background: rgba(255,255,255,.85);
-    border-radius: 4px;
-    box-shadow:inset 1px 1px 10px #000;
-    font-size: 14px;
-    height: 34px;
+    font-size: 19px;
+    height: 38px;
     line-height: 2.5;
     margin-right: 8px;
     overflow: hidden;
@@ -170,13 +175,15 @@
 /* THE LIST OF OPTIONS */
 .mod-head-model-001{{{cns}}} .mod-enumerated .mod-enumerated-list {
     background: rgba(255,255,255,.85);
+    border-radius: 4px;
+    box-shadow:inset 1px 1px 10px #000;
     display: none;
-    font-weight: bold;
-    height: 69px;
+    font-size: 19px;
+    height: auto;
     overflow: auto;
     position: relative;
-    width: 180px;
-    z-index: 3;
+    width: 80px;
+    z-index: 5;
 }
 
 .mod-head-model-001{{{cns}}} .mod-enumerated .mod-enumerated-list > div {

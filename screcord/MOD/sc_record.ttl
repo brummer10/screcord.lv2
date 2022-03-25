@@ -26,27 +26,28 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix guiext: <http://lv2plug.in/ns/extensions/ui#>.
 
-<https://github.com/brummer10#me>
-	a foaf:Person ;
-	foaf:name "brummer" ;
-	foaf:mbox <mailto:brummer@web.de> ;
-	rdfs:seeAlso <https://github.com/brummer10> .
-
 <https://github.com/brummer10/screcord#mono_record>
     a lv2:Plugin ,
         lv2:UtilityPlugin ;
-    doap:maintainer <https://github.com/brummer10#me> ;
+    doap:maintainer [
+		foaf:name "brummer";
+		foaf:homepage <https://github.com/brummer10/sc_record>;
+	] ;
     doap:name "Record-Mono";
     doap:license <http://opensource.org/licenses/isc> ;
-    lv2:project <https://github.com/brummer10/sc_record> ;
+    lv2:project <https://github.com/brummer10/screcord.lv2> ;
     lv2:optionalFeature lv2:hardRTCapable ;
     lv2:extensionData state:interface ;
 
     lv2:minorVersion 1;
-    lv2:microVersion 0;
+    lv2:microVersion 1;
 
 rdfs:comment """
-Lv2 capture plugin, save audio stream as wav or ogg files.
+Mono Recorder plugin, save audio stream as wav or ogg files.
+
+Features:
+Developed by Brummer
+
 """;
 
     lv2:port [
@@ -113,17 +114,24 @@ Lv2 capture plugin, save audio stream as wav or ogg files.
 <https://github.com/brummer10/screcord#stereo_record>
     a lv2:Plugin ,
         lv2:UtilityPlugin ;
-    doap:maintainer <https://github.com/brummer10#me> ;
+    doap:maintainer [
+		foaf:name "brummer";
+		foaf:homepage <https://github.com/brummer10/screcord.lv2>;
+	] ;
     doap:name "Record-Stereo";
     doap:license <http://opensource.org/licenses/isc> ;
     lv2:project <https://github.com/brummer10/sc_record> ;
     lv2:optionalFeature lv2:hardRTCapable ;
 
     lv2:minorVersion 1;
-    lv2:microVersion 0;
+    lv2:microVersion 1;
 
 rdfs:comment """
-Lv2 capture plugin, save audio stream as wav or ogg files.
+Stereo Reocrder plugin, save audio stream as wav or ogg files.
+
+Features:
+Developed by Brummer
+
 """;
 
     lv2:port [
