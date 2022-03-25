@@ -31,7 +31,7 @@
         lv2:UtilityPlugin ;
     doap:maintainer [
 		foaf:name "brummer";
-		foaf:homepage <https://github.com/brummer10/sc_record>;
+		foaf:homepage <https://github.com/brummer10/screcord.lv2>;
 	] ;
     doap:name "Record-Mono";
     doap:license <http://opensource.org/licenses/isc> ;
