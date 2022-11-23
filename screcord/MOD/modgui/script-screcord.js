@@ -23,7 +23,7 @@ function (event) {
             def = 115.0;
         }
 
-        return (Math.floor((def/115.0) * 10) * 63).toFixed(1);
+        return (Math.floor((def/115.0) * 63) * 10).toFixed(1);
     }
 
     function handle_event (symbol, value) {
