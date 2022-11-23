@@ -23,7 +23,7 @@ function (event) {
             def = 115.0;
         }
 
-        return (Math.floor((def/115.0) * 63) * 10).toFixed(1);
+        return (Math.floor((def/115.0) * 10) * 63).toFixed(1);
     }
 
     function handle_event (symbol, value) {
@@ -39,6 +39,16 @@ function (event) {
             case 'RMETER':
                 position = log_meter (value);
                 event.icon.find ('[mod-role=RMETER]').css({backgroundPosition: `-${position}px 0px`});
+                break;
+            case 'REC':
+                if (value > 0) {
+                    event.icon.find ('[mod-role=TAPE]').css({'animation-play-state': 'running'});
+                    event.icon.find ('[mod-role=TAPE2]').css({'animation-play-state': 'running'});
+                } else {
+                    event.icon.find ('[mod-role=TAPE]').css({'animation-play-state': 'paused'});
+                    event.icon.find ('[mod-role=TAPE2]').css({'animation-play-state': 'paused'});
+                }
+                
                 break;
             default:
                 break;

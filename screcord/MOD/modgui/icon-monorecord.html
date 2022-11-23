@@ -1,5 +1,7 @@
 <div class="mod-pedal mod-head-model-001{{{cns}}} mod-head-model-001-0550{{{cns}}}">
     <div mod-role="drag-handle" class="mod-drag-handle"></div>
+    <div class="tape" mod-role="TAPE"></div>
+    <div class="tape2" mod-role="TAPE2"></div>
     <div class="mod-control-group clearfix">
         {{#controls.0}}
         <div class="mod-enumerated clearfix" mod-role="input-control-port" mod-port-symbol="{{symbol}}" mod-widget="custom-select">
@@ -13,7 +15,7 @@
         {{/controls.0}}
         {{#controls.1}}
         <div class="mod-switch" title="{{comment}}">
-            <div class="mod-switch-image" mod-role="input-control-port" mod-port-symbol="{{symbol}}"></div>
+            <div id="js-toggle" class="mod-switch-image" mod-role="input-control-port" mod-port-symbol="{{symbol}}" mod-widget="switch"></div>
         </div>
         {{/controls.1}}
         <div class="mod-led" title="{{comment}}">

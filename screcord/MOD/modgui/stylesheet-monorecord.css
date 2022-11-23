@@ -35,6 +35,40 @@
     position: absolute;
 }
 
+@keyframes sprite {
+  to { background-position: -10488px }
+}
+
+.mod-head-model-001{{{cns}}} .tape {
+  height: 437px;
+  width: 437px;
+  position: relative;
+  display: inline-block;
+  background: url(/resources/heads/model-001/Mono_TurningTape_Red.webp{{{ns}}});
+  animation: sprite 1.5s steps(24) infinite;
+  animation-play-state: paused;
+  transform: translate(-31.5%, -30%) scale(0.38);
+}
+
+.mod-head-model-001{{{cns}}} .tape2 {
+  height: 437px;
+  width: 437px;
+  display: inline-block;
+  position: relative;
+  background: url(/resources/heads/model-001/TurningTape_White.webp{{{ns}}});
+  animation: sprite 1.5s steps(24) infinite;
+  animation-play-state: paused;
+  transform: translate(+10.5%, -131.5%) scale(0.38);
+}
+
+.mod-head-model-001{{{cns}}} .tape:hover {
+    animation-play-state: running;
+}
+
+.mod-head-model-001{{{cns}}} .tape2:hover {
+    animation-play-state: running;
+}
+
 /* CONTROLS */
 .mod-head-model-001{{{cns}}} .mod-control-group {
     bottom: 149px;
@@ -69,14 +103,15 @@
     height: 128px;
     width: 135px;
     z-index: 4;
+    cursor: pointer;
 }
 
 .mod-head-model-001{{{cns}}} .mod-switch-image.on {
-    background-position: -128px 0px;
+    background-position: -135px 0px !important;
 }
 
 .mod-head-model-001{{{cns}}} .mod-switch-image.off {
-    background-position: left 0px;
+    background-position: left 0px !important;
 }
 
 /* SWITCH ON/OFF - 0550 */
@@ -159,6 +194,7 @@
 }
 
 .mod-head-model-001{{{cns}}} .mod-enumerated .mod-enumerated-selected {
+    font-weight: bold;
     font-size: 19px;
     height: 38px;
     line-height: 2.5;
@@ -178,6 +214,7 @@
     border-radius: 4px;
     box-shadow:inset 1px 1px 10px #000;
     display: none;
+    font-weight: bold;
     font-size: 19px;
     height: auto;
     overflow: auto;
