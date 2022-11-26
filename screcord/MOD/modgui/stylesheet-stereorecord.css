@@ -42,7 +42,7 @@
     position: absolute;
 }
 
-@keyframes sprite {
+@keyframes sprite_st {
   to { background-position: -4608px }
 }
 
@@ -56,7 +56,7 @@
   position: relative;
   display: inline-block;
   background: url(/resources/heads/model-001/Stereo_TurningTape_Red.webp{{{ns}}});
-  animation: sprite 1.0s steps(24) infinite;
+  animation: sprite_st 1.0s steps(24) infinite;
   animation-play-state: paused;
   transform: translate(-11%, -11.5%) scale(0.75);
 }

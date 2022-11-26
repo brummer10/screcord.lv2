@@ -61,14 +61,6 @@
   transform: translate(+10.5%, -131.5%) scale(0.38);
 }
 
-.mod-head-model-001{{{cns}}} .tape:hover {
-    animation-play-state: running;
-}
-
-.mod-head-model-001{{{cns}}} .tape2:hover {
-    animation-play-state: running;
-}
-
 /* CONTROLS */
 .mod-head-model-001{{{cns}}} .mod-control-group {
     bottom: 149px;
