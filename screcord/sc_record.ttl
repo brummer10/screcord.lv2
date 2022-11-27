@@ -222,3 +222,132 @@
         lv2:extensionData guiext::idle ; 
         lv2:requiredFeature guiext:makeResident;
   .
+
+<https://github.com/brummer10/screcord#quad_record>
+    a lv2:Plugin ,
+        lv2:UtilityPlugin ;
+    doap:maintainer <https://github.com/brummer10#me> ;
+    doap:name "QuadRecord";
+    doap:license <http://opensource.org/licenses/isc> ;
+    lv2:project <https://github.com/brummer10/sc_record> ;
+    lv2:optionalFeature lv2:hardRTCapable ;
+    opts:supportedOption <http://ardour.org/lv2/threads/#schedPolicy>;
+    opts:supportedOption <http://ardour.org/lv2/threads/#schedPriority>;
+
+    lv2:minorVersion 0;
+    lv2:microVersion 1;
+
+  guiext:ui <https://github.com/brummer10/screcord_ui#quad_record>;
+
+    lv2:port [
+        a lv2:InputPort ,
+            lv2:ControlPort ;
+        lv2:index 0 ;
+        lv2:symbol "FORM" ;
+        lv2:name "FORM";
+        lv2:default 0;
+        lv2:minimum 0 ;
+        lv2:maximum 1 ;
+        lv2:portProperty lv2:integer;
+        lv2:portProperty lv2:enumeration ;
+        lv2:scalePoint [rdfs:label "*.wav"; rdf:value 0];
+        lv2:scalePoint [rdfs:label "*.ogg"; rdf:value 1];
+    ] , [
+        a lv2:InputPort ,
+            lv2:ControlPort ;
+        lv2:index 1 ;
+        lv2:symbol "REC" ;
+        lv2:name "REC";
+        lv2:portProperty lv2:toggled;
+        lv2:portProperty lv2:integer;
+        lv2:default 0.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 1.0 ;
+        rdfs:comment "recorded files goes to ~/home/lv2record/" ,
+        "Aufnahmen gehen nach ~/home/lv2record/ "@de ,
+        "Les fichiers sont enregistrés dans ~/home/lv2record/ "@fr;
+    ] , [
+        a lv2:OutputPort ,
+            lv2:ControlPort ;
+        lv2:index 2 ;
+        lv2:symbol "CLIP" ;
+        lv2:name "CLIP";
+        lv2:portProperty lv2:toggled;
+        lv2:portProperty lv2:integer;
+        lv2:default 0.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 1.0 ;
+    ] , [
+        a lv2:OutputPort ,
+            lv2:ControlPort ;
+        lv2:index 3 ;
+        lv2:symbol "LMETER" ;
+        lv2:name "L-METER" ;
+        lv2:default -70.0 ;
+        lv2:minimum -70.0 ;
+        lv2:maximum 4.0 ;
+    ] , [
+        a lv2:AudioPort ,
+            lv2:OutputPort ;
+        lv2:index 4 ;
+        lv2:symbol "out" ;
+        lv2:name "Out"
+    ] , [
+        a lv2:AudioPort ,
+            lv2:InputPort ;
+        lv2:index 5 ;
+        lv2:symbol "in" ;
+        lv2:name "In" ;
+    ] , [
+        a lv2:OutputPort ,
+            lv2:ControlPort ;
+        lv2:index 6 ;
+        lv2:symbol "RMETER" ;
+        lv2:name "R-METER" ;
+        lv2:default -70.0 ;
+        lv2:minimum -70.0 ;
+        lv2:maximum 4.0 ;
+    ] , [
+        a lv2:AudioPort ,
+            lv2:OutputPort ;
+        lv2:index 7 ;
+        lv2:symbol "out1" ;
+        lv2:name "Out1"
+    ] , [
+        a lv2:AudioPort ,
+            lv2:InputPort ;
+        lv2:index 8 ;
+        lv2:symbol "in1" ;
+        lv2:name "In1" ;
+    ] , [
+        a lv2:AudioPort ,
+            lv2:OutputPort ;
+        lv2:index 9 ;
+        lv2:symbol "out2" ;
+        lv2:name "Out2"
+    ] , [
+        a lv2:AudioPort ,
+            lv2:InputPort ;
+        lv2:index 10 ;
+        lv2:symbol "in2" ;
+        lv2:name "In2" ;
+    ] , [
+        a lv2:AudioPort ,
+            lv2:OutputPort ;
+        lv2:index 11 ;
+        lv2:symbol "out3" ;
+        lv2:name "Out3"
+    ] , [
+        a lv2:AudioPort ,
+            lv2:InputPort ;
+        lv2:index 12 ;
+        lv2:symbol "in3" ;
+        lv2:name "In3" ;
+    ].
+
+<https://github.com/brummer10/screcord_ui#quad_record>
+  a guiext:X11UI;
+  guiext:binary <sc_record_ui.so>;
+        lv2:extensionData guiext::idle ; 
+        lv2:requiredFeature guiext:makeResident;
+  .

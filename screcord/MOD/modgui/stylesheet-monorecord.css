@@ -1,8 +1,5 @@
 /* SKINS */
-.mod-head-model-001{{{cns}}} {
-    border-radius: 20px;
-}
-.mod-head-model-001-0550{{{cns}}} {
+.sc_record{{{cns}}} {
     background-image: url(/resources/heads/model-001/RecordMono_Background.webp{{{ns}}});
     background-size: 345px 237px;
     background-position: center center;
@@ -11,10 +8,11 @@
     height: 237px;
     position: relative;
     width: 345px;
+    border-radius: 20px;
 }
 
 /* THE AUTHOR */
-.mod-head-model-001{{{cns}}} .mod-plugin-brand h1 {
+.sc_record{{{cns}}} .mod-plugin-brand h1 {
     bottom: 90px;
     color: #fff;
     font-size: 14px;
@@ -25,7 +23,7 @@
 }
 
 /* PLUGIN'S NAME */
-.mod-head-model-001{{{cns}}} .mod-plugin-name h1 {
+.sc_record{{{cns}}} .mod-plugin-name h1 {
     bottom: 50px;
     color: #fff;
     font-size: 18px;
@@ -36,33 +34,61 @@
 }
 
 @keyframes sprite {
-  to { background-position: -10488px }
+    to { background-position: -10488px }
 }
 
-.mod-head-model-001{{{cns}}} .tape {
-  height: 437px;
-  width: 437px;
-  position: relative;
-  display: inline-block;
-  background: url(/resources/heads/model-001/Mono_TurningTape_Red.webp{{{ns}}});
-  animation: sprite 1.5s steps(24) infinite;
-  animation-play-state: paused;
-  transform: translate(-31.5%, -30%) scale(0.38);
+.sc_record{{{cns}}} .tape {
+    height: 437px;
+    width: 437px;
+    position: relative;
+    display: inline-block;
+    background: url(/resources/heads/model-001/Mono_TurningTape_Red.webp{{{ns}}});
+    animation: sprite 1.5s steps(24) infinite;
+    animation-play-state: paused;
+
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000;
+    -moz-perspective: 1000;
+    -ms-perspective: 1000;
+    perspective: 1000;
+
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    transform: translate(-31.5%, -30%) scale(0.38);
 }
 
-.mod-head-model-001{{{cns}}} .tape2 {
-  height: 437px;
-  width: 437px;
-  display: inline-block;
-  position: relative;
-  background: url(/resources/heads/model-001/TurningTape_White.webp{{{ns}}});
-  animation: sprite 1.5s steps(24) infinite;
-  animation-play-state: paused;
-  transform: translate(+10.5%, -131.5%) scale(0.38);
+.sc_record{{{cns}}} .tape2 {
+    height: 437px;
+    width: 437px;
+    display: inline-block;
+    position: relative;
+    background: url(/resources/heads/model-001/TurningTape_White.webp{{{ns}}});
+    animation: sprite 1.5s steps(24) infinite;
+    animation-play-state: paused;
+
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000;
+    -moz-perspective: 1000;
+    -ms-perspective: 1000;
+    perspective: 1000;
+
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    transform: translate(+10.5%, -131.5%) scale(0.38);
 }
 
 /* CONTROLS */
-.mod-head-model-001{{{cns}}} .mod-control-group {
+.sc_record{{{cns}}} .mod-control-group {
     bottom: 149px;
     color: #fff;
     font-size: 10px;
@@ -73,12 +99,12 @@
     top: 120px;
 }
 
-.mod-head-model-001{{{cns}}} .mod-control-group > div {
+.sc_record{{{cns}}} .mod-control-group > div {
     margin-right: 2px;
 }
 
 /* SWITCH ON/OFF GENERAL */
-.mod-head-model-001{{{cns}}} .mod-switch {
+.sc_record{{{cns}}} .mod-switch {
     cursor: pointer;
     float: left;
     height: 128px;
@@ -87,7 +113,7 @@
     width: 135px;
 }
 
-.mod-head-model-001{{{cns}}} .mod-switch-image {
+.sc_record{{{cns}}} .mod-switch-image {
     background-image: url(/resources/switches/Record_button.webp{{{ns}}});
     background-position: left 0px;
     background-repeat: no-repeat;
@@ -98,20 +124,15 @@
     cursor: pointer;
 }
 
-.mod-head-model-001{{{cns}}} .mod-switch-image.on {
+.sc_record{{{cns}}} .mod-switch-image.on {
     background-position: -135px 0px !important;
 }
 
-.mod-head-model-001{{{cns}}} .mod-switch-image.off {
+.sc_record{{{cns}}} .mod-switch-image.off {
     background-position: left 0px !important;
 }
 
-/* SWITCH ON/OFF - 0550 */
-.mod-head-model-001-0550{{{cns}}} .mod-switch {
-    width: 180px;
-}
-
-.mod-head-model-001{{{cns}}} .mod-led {
+.sc_record{{{cns}}} .mod-led {
     float: left;
     height: 64px;
     overflow: hidden;
@@ -122,7 +143,7 @@
     width: 64px;
 }
 
-.mod-head-model-001{{{cns}}} .mod-led .mod-led-image {
+.sc_record{{{cns}}} .mod-led .mod-led-image {
     background-image: url(/resources/switches/LED.webp{{{ns}}});
     background-position: left 0px;
     background-repeat: no-repeat;
@@ -135,7 +156,7 @@
     z-index: 3;
 }
 
-.mod-head-model-001{{{cns}}} .mod-led .mod-led-title {
+.sc_record{{{cns}}} .mod-led .mod-led-title {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 10px;
     font-weight: bold;
@@ -147,7 +168,7 @@
     z-index: 1;
 }
 
-.mod-head-model-001{{{cns}}} .mod-meter {
+.sc_record{{{cns}}} .mod-meter {
     float: left;
     height: 123px;
     overflow: hidden;
@@ -160,7 +181,7 @@
     box-shadow: 2px 2px 2px 0px #000 inset, -1px -1px 1px 1px #888 inset;
 }
 
-.mod-head-model-001{{{cns}}} .mod-meter .mod-meter-image {
+.sc_record{{{cns}}} .mod-meter .mod-meter-image {
     background-image:url(/resources/knobs/Record_meter.png{{{ns}}});
     background-position: left 0px;
     background-repeat: no-repeat;
@@ -173,7 +194,7 @@
 }
 
 /* ENUMERATED LIST */
-.mod-head-model-001{{{cns}}} .mod-enumerated {
+.sc_record{{{cns}}} .mod-enumerated {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     color: #000;
     display: inline-block;
@@ -185,7 +206,7 @@
     width: 80px;
 }
 
-.mod-head-model-001{{{cns}}} .mod-enumerated .mod-enumerated-selected {
+.sc_record{{{cns}}} .mod-enumerated .mod-enumerated-selected {
     font-weight: bold;
     font-size: 19px;
     height: 38px;
@@ -196,12 +217,12 @@
 }
 
 /* WHEN IS HOVER */
-.mod-head-model-001{{{cns}}} .mod-enumerated:hover .mod-enumerated-selected {
+.sc_record{{{cns}}} .mod-enumerated:hover .mod-enumerated-selected {
     border-radius: 4px 4px 0 0;
 }
 
 /* THE LIST OF OPTIONS */
-.mod-head-model-001{{{cns}}} .mod-enumerated .mod-enumerated-list {
+.sc_record{{{cns}}} .mod-enumerated .mod-enumerated-list {
     background: rgba(255,255,255,.85);
     border-radius: 4px;
     box-shadow:inset 1px 1px 10px #000;
@@ -215,17 +236,17 @@
     z-index: 5;
 }
 
-.mod-head-model-001{{{cns}}} .mod-enumerated .mod-enumerated-list > div {
+.sc_record{{{cns}}} .mod-enumerated .mod-enumerated-list > div {
     padding: 3px 9px;
 }
 
-.mod-head-model-001{{{cns}}} .mod-enumerated .mod-enumerated-list > div:hover {
+.sc_record{{{cns}}} .mod-enumerated .mod-enumerated-list > div:hover {
     background: rgba(0,0,0,.35);
     cursor: pointer;
 }
 
 /* SEPARATOR */
-.mod-head-model-001{{{cns}}} .mod-separator {
+.sc_record{{{cns}}} .mod-separator {
     background: #000;
     display: inline-block;
     float: left;

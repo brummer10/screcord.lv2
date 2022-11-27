@@ -169,9 +169,7 @@ static void draw_my_button(void *w_, void* user_data) {
 static void value_changed(void *w_, void* user_data) {
     Widget_t *w = (Widget_t*)w_;
     X11_UI* ui = (X11_UI*)w->parent_struct;
-    if (ui->block_event != w->data) 
-        ui->write_function(ui->controller,w->data,sizeof(float),0,&w->adj->value);
-    ui->block_event = -1;
+    ui->write_function(ui->controller,w->data,sizeof(float),0,&w->adj->value);
 }
 
 static void show_path(void *w_, void* user_data) {
@@ -218,6 +216,7 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor * descriptor,
     ui->parentXwindow = 0;
     LV2UI_Resize* resize = NULL;
     ui->block_event = -1;
+    ui->make_path = NULL;
 
     int i = 0;
     for (; features[i]; ++i) {
@@ -305,7 +304,7 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor * descriptor,
     // finally map all Widgets on screen
     widget_show_all(ui->win);
     // hide 2. meter on mono UI
-    if (strstr(plugin_uri, "stereo") == NULL)
+    if (strstr(plugin_uri, "mono") != NULL)
         widget_hide(ui->widget[4]);
     // set the widget pointer to the X11 Window from the toplevel Widget_t
     *widget = (void*)ui->win->widget;
@@ -346,13 +345,15 @@ static void port_event(LV2UI_Handle handle, uint32_t port_index,
     for (;i<CONTROLS;i++) {
         if (port_index == ui->widget[i]->data) {
             // prevent event loop between host and plugin
-            ui->block_event = (int)port_index;
+            xevfunc store = ui->widget[i]->func.value_changed_callback;
+            ui->widget[i]->func.value_changed_callback = dummy_callback;
             // case port is METER, convert value to meter deflection
             if (port_index == LMETER || port_index == RMETER)
                 value = power2db(ui->widget[i], value);
             // Xputty check if the new value differs from the old one
             // and set new one, when needed
             check_value_changed(ui->widget[i]->adj, &value);
+            ui->widget[i]->func.value_changed_callback = store;
         }
     }
 }
@@ -402,6 +403,14 @@ static const LV2UI_Descriptor descriptor1 = {
     extension_data
 };
 
+static const LV2UI_Descriptor descriptor2 = {
+    SCPLUGIN_UI_URI "#quad_record",
+    instantiate,
+    cleanup,
+    port_event,
+    extension_data
+};
+
 
 LV2_SYMBOL_EXPORT
 const LV2UI_Descriptor* lv2ui_descriptor(uint32_t index) {
@@ -410,6 +419,8 @@ const LV2UI_Descriptor* lv2ui_descriptor(uint32_t index) {
             return &descriptor;
         case 1:
             return &descriptor1;
+        case 2:
+            return &descriptor2;
         default:
         return NULL;
     }

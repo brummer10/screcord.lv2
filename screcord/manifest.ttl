@@ -29,3 +29,8 @@
     a lv2:Plugin ;
     lv2:binary <sc_record.so>  ;
     rdfs:seeAlso <sc_record.ttl> .
+
+<https://github.com/brummer10/screcord#quad_record>
+    a lv2:Plugin ;
+    lv2:binary <sc_record.so>  ;
+    rdfs:seeAlso <sc_record.ttl> .

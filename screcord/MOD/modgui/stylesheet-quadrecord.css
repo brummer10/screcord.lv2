@@ -1,25 +1,25 @@
 /* SKINS */
-.sc_record_stereo{{{cns}}} {
-    background-image: url(/resources/heads/model-001/RecordStereo_Background.webp{{{ns}}});
-    background-size: 345px 237px;
+.sc_record_quad{{{cns}}} {
+    background-image: url(/resources/heads/model-001/RecordQuad_Background.webp{{{ns}}});
+    background-size: 415px 297px;
     background-position: center center;
     background-repeat: no-repeat;
     font-family: Helvetica,Arial,Sans-serif;
-    height: 237px;
+    height: 297px;
     position: relative;
-    width: 345px;
+    width: 415px;
     border-radius: 20px;
 }
 
 /* PORTS
 ================================================ */
 
-.sc_record_stereo{{{cns}}} .mod-pedal-input {
-    top: 86px;
+.sc_record_quad{{{cns}}} .mod-pedal-input {
+    top: 16px;
 }
 
 /* THE AUTHOR */
-.sc_record_stereo{{{cns}}} .mod-plugin-brand h1 {
+.sc_record_quad{{{cns}}} .mod-plugin-brand h1 {
     bottom: 90px;
     color: #fff;
     font-size: 14px;
@@ -30,7 +30,7 @@
 }
 
 /* PLUGIN'S NAME */
-.sc_record_stereo{{{cns}}} .mod-plugin-name h1 {
+.sc_record_quad{{{cns}}} .mod-plugin-name h1 {
     bottom: 50px;
     color: #fff;
     font-size: 18px;
@@ -40,21 +40,17 @@
     position: absolute;
 }
 
-@keyframes sprite_st {
-    to { background-position: -4608px }
-}
-
 @keyframes sprite2 {
     to { background-position: -10488px }
 }
 
-.sc_record_stereo{{{cns}}} .tape {
-    height: 216px;
-    width: 192px;
+.sc_record_quad{{{cns}}} .tape {
+    height: 437px;
+    width: 437px;
     position: relative;
     display: inline-block;
-    background: url(/resources/heads/model-001/Stereo_TurningTape_Red.webp{{{ns}}});
-    animation: sprite_st 1.0s steps(24) infinite;
+    background: url(/resources/heads/model-001/Mono_TurningTape_Red.webp{{{ns}}});
+    animation: sprite2 1.5s steps(24) infinite;
     animation-play-state: paused;
 
     -webkit-backface-visibility: hidden;
@@ -70,10 +66,10 @@
     -moz-transform: translate3d(0, 0, 0);
     -ms-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
-    transform: translate(-11%, -11.5%) scale(0.75);
+    transform: translate(-27.5%, -26%) scale(0.46);
 }
 
-.sc_record_stereo{{{cns}}} .tape2 {
+.sc_record_quad{{{cns}}} .tape2 {
     height: 437px;
     width: 437px;
     display: inline-block;
@@ -95,11 +91,11 @@
     -moz-transform: translate3d(0, 0, 0);
     -ms-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
-    transform: translate(+10.5%, -81.5%) scale(0.38);
+    transform: translate(+22.5%, -126.5%) scale(0.45);
 }
 
 /* CONTROLS */
-.sc_record_stereo{{{cns}}} .mod-control-group {
+.sc_record_quad{{{cns}}} .mod-control-group {
     bottom: 149px;
     color: #fff;
     font-size: 10px;
@@ -110,50 +106,51 @@
     top: 120px;
 }
 
-.sc_record_stereo{{{cns}}} .mod-control-group > div {
+.sc_record_quad{{{cns}}} .mod-control-group > div {
     margin-right: 2px;
 }
 
 /* SWITCH ON/OFF GENERAL */
-.sc_record_stereo{{{cns}}} .mod-switch {
+.sc_record_quad{{{cns}}} .mod-switch {
     cursor: pointer;
     float: left;
     height: 128px;
     position: relative;
-    margin-left: 2px;
+    margin-left: 18px;
+    margin-top: 10px;
     width: 135px;
 }
 
-.sc_record_stereo{{{cns}}} .mod-switch-image {
+.sc_record_quad{{{cns}}} .mod-switch-image {
     background-image: url(/resources/switches/Record_button.webp{{{ns}}});
     background-position: left 0px;
     background-repeat: no-repeat;
-    background-size: auto 128px;
-    height: 128px;
-    width: 135px;
+    background-size: auto 171px;
+    height: 171px;
+    width: 180px;
     z-index: 4;
 }
 
-.sc_record_stereo{{{cns}}} .mod-switch-image.on {
-    background-position: -135px 0px !important;
+.sc_record_quad{{{cns}}} .mod-switch-image.on {
+    background-position: -181px 0px !important;
 }
 
-.sc_record_stereo{{{cns}}} .mod-switch-image.off {
+.sc_record_quad{{{cns}}} .mod-switch-image.off {
     background-position: left 0px !important;
 }
 
-.sc_record_stereo{{{cns}}} .mod-led {
+.sc_record_quad{{{cns}}} .mod-led {
     float: left;
     height: 64px;
     overflow: hidden;
     position: absolute;
-    margin-top: 50px;
-    margin-left: -55px;
+    margin-top: 103px;
+    margin-left: -40px;
     text-align: center;
     width: 64px;
 }
 
-.sc_record_stereo{{{cns}}} .mod-led .mod-led-image {
+.sc_record_quad{{{cns}}} .mod-led .mod-led-image {
     background-image: url(/resources/switches/LED.webp{{{ns}}});
     background-position: left 0px;
     background-repeat: no-repeat;
@@ -166,7 +163,7 @@
     z-index: 3;
 }
 
-.sc_record_stereo{{{cns}}} .mod-led .mod-led-title {
+.sc_record_quad{{{cns}}} .mod-led .mod-led-title {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 10px;
     font-weight: bold;
@@ -178,18 +175,18 @@
     z-index: 1;
 }
 
-.sc_record_stereo{{{cns}}} .mod-meter {
+.sc_record_quad{{{cns}}} .mod-meter {
     float: left;
     height: 123px;
     overflow: hidden;
     position: absolute;
     text-align: center;
-    margin-left: 59px;
-    margin-top: -90px;
+    margin-left: 94px;
+    margin-top: -92px;
     width: 22px;
 }
 
-.sc_record_stereo{{{cns}}} .mod-meter .mod-meter-image {
+.sc_record_quad{{{cns}}} .mod-meter .mod-meter-image {
     background-image:url(/resources/knobs/Record_meter.png{{{ns}}});
     background-position: left 0px;
     background-repeat: no-repeat;
@@ -203,7 +200,7 @@
     box-shadow: 2px 2px 2px 0px #000 inset, -1px -1px 1px 1px #888 inset;
 }
 
-.sc_record_stereo{{{cns}}} .mod-meter .mod-meter-image-right {
+.sc_record_quad{{{cns}}} .mod-meter .mod-meter-image-right {
     background-image:url(/resources/knobs/Record_meter.png{{{ns}}});
     background-position: left 0px;
     background-repeat: no-repeat;
@@ -219,19 +216,19 @@
 }
 
 /* ENUMERATED LIST */
-.sc_record_stereo{{{cns}}} .mod-enumerated {
+.sc_record_quad{{{cns}}} .mod-enumerated {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     color: #000;
     display: inline-block;
     margin-top: -121px;
     overflow: hidden;
     position: absolute;
-    left: 45px;
+    left: 75px;
     top: -11px;
     width: 80px;
 }
 
-.sc_record_stereo{{{cns}}} .mod-enumerated .mod-enumerated-selected {
+.sc_record_quad{{{cns}}} .mod-enumerated .mod-enumerated-selected {
     font-weight: bold;
     font-size: 19px;
     height: 38px;
@@ -242,12 +239,12 @@
 }
 
 /* WHEN IS HOVER */
-.sc_record_stereo{{{cns}}} .mod-enumerated:hover .mod-enumerated-selected {
+.sc_record_quad{{{cns}}} .mod-enumerated:hover .mod-enumerated-selected {
     border-radius: 4px 4px 0 0;
 }
 
 /* THE LIST OF OPTIONS */
-.sc_record_stereo{{{cns}}} .mod-enumerated .mod-enumerated-list {
+.sc_record_quad{{{cns}}} .mod-enumerated .mod-enumerated-list {
     background: rgba(255,255,255,.85);
     border-radius: 4px;
     box-shadow:inset 1px 1px 10px #000;
@@ -261,17 +258,17 @@
     z-index: 5;
 }
 
-.sc_record_stereo{{{cns}}} .mod-enumerated .mod-enumerated-list > div {
+.sc_record_quad{{{cns}}} .mod-enumerated .mod-enumerated-list > div {
     padding: 3px 9px;
 }
 
-.sc_record_stereo{{{cns}}} .mod-enumerated .mod-enumerated-list > div:hover {
+.sc_record_quad{{{cns}}} .mod-enumerated .mod-enumerated-list > div:hover {
     background: rgba(0,0,0,.35);
     cursor: pointer;
 }
 
 /* SEPARATOR */
-.sc_record_stereo{{{cns}}} .mod-separator {
+.sc_record_quad{{{cns}}} .mod-separator {
     background: #000;
     display: inline-block;
     float: left;

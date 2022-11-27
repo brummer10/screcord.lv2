@@ -24,7 +24,7 @@ namespace screcord {
 
 #define always_inline inline __attribute__((always_inline))
 
-#define MAXRECSIZE 131072
+#define MAXRECSIZE 102400  //100kb
 #define MAXFILESIZE INT_MAX-MAXRECSIZE // 2147352576  //2147483648-MAXRECSIZE
 
 class SCapture {
@@ -66,6 +66,8 @@ private:
     void        init(unsigned int samplingFreq);
     void        compute(int count, float *input0, float *output0);
     void        compute_st(int count, float *input0, float *input1, float *output0, float *output1);
+    void        compute_quad(int count, float *input0, float *input1, float *input2, float *input3,
+                                    float *output0, float *output1, float *output2, float *output3);
     void        save_to_wave(SNDFILE * sf, float *tape, int lSize);
     SNDFILE     *open_stream(std::string fname);
     void        close_stream(SNDFILE **sf);
@@ -84,6 +86,8 @@ public:
     static void set_samplerate(unsigned int samplingFreq, SCapture*);
     static void mono_audio(int count, float *input0, float *output0, SCapture*);
     static void stereo_audio(int count, float *input0, float *input1, float *output0, float *output1, SCapture*);
+    static void quad_audio(int count, float *input0, float *input1, float *input2, float *input3,
+                            float *output0, float *output1, float *output2, float *output3, SCapture*);
     static void delete_instance(SCapture *p);
     static void connect_ports(uint32_t port,void* data, SCapture *p);
     SCapture(int channel_);
@@ -327,7 +331,7 @@ void always_inline SCapture::compute(int count, float *input0, float *output0)
             } else {
                 fRec0[IOTA] = fTemp0;
             }
-            IOTA = (IOTA<MAXRECSIZE-1) ? IOTA+1 : 0; 
+            IOTA = (IOTA<MAXRECSIZE) ? IOTA+1 : 0; 
             if (!IOTA) { // when buffer is full, flush to stream
                 iA = iA ? 0 : 1 ;
                 tape = iA ? fRec0 : fRec1;
@@ -419,6 +423,80 @@ void always_inline SCapture::compute_st(int count, float *input0, float *input1,
 void SCapture::stereo_audio(int count, float *input0, float *input1, float *output0, float *output1, SCapture *p)
 {
     (p)->compute_st(count, input0, input1, output0, output1);
+}
+
+void always_inline SCapture::compute_quad(int count, float *input0, float *input1, float *input2, float *input3,
+                                        float *output0, float *output1, float *output2, float *output3)
+{
+    if (err) *fcheckbox0 = 0.0;
+    int iSlow0 = int(*fcheckbox0);
+    *fcheckbox1 = int(fmax(fRecb2[0],fRecb2r[0]));
+    for (int i=0; i<count; i++) {
+        float fTemp0 = (float)input0[i];
+        float fTemp1 = (float)input1[i];
+        float fTemp2 = (float)input2[i];
+        float fTemp3 = (float)input3[i];
+        // check if we run into clipping
+        float 	fRec3 = fmax(fConst0,fabsf(fmax(fTemp0, fTemp2)));
+        int iTemp1 = int((iRecb1[1] < 4096));
+        fRecb0[0] = ((iTemp1)?fmax(fRecb0[1], fRec3):fRec3);
+        iRecb1[0] = ((iTemp1)?(1 + iRecb1[1]):1);
+        fRecb2[0] = ((iTemp1)?fRecb2[1]:fRecb0[1]);
+
+        float 	fRec3r = fmax(fConst0,fabsf(fmax(fTemp1, fTemp3)));
+        int iTemp1r = int((iRecb1r[1] < 4096));
+        fRecb0r[0] = ((iTemp1r)?fmax(fRecb0r[1], fRec3r):fRec3r);
+        iRecb1r[0] = ((iTemp1r)?(1 + iRecb1r[1]):1);
+        fRecb2r[0] = ((iTemp1r)?fRecb2r[1]:fRecb0r[1]);
+        
+        if (iSlow0) { //record
+            if (iA) {
+                fRec1[IOTA] = fTemp0;
+                fRec1[IOTA+1] = fTemp1;
+                fRec1[IOTA+2] = fTemp2;
+                fRec1[IOTA+3] = fTemp3;
+            } else {
+                fRec0[IOTA] = fTemp0;
+                fRec0[IOTA+1] = fTemp1;
+                fRec0[IOTA+2] = fTemp2;
+                fRec0[IOTA+3] = fTemp3;
+            }
+            IOTA = (IOTA<MAXRECSIZE-6) ? IOTA+4 : 0; 
+            if (!IOTA) { // when buffer is full, flush to stream
+                iA = iA ? 0 : 1 ;
+                tape = iA ? fRec0 : fRec1;
+                keep_stream = true;
+                savesize = MAXRECSIZE;
+                sem_post(&m_trig);
+            }
+        } else if (IOTA) { // when record stoped, flush the rest to stream
+            tape = iA ? fRec1 : fRec0;
+            savesize = IOTA;
+            keep_stream = false;
+            sem_post(&m_trig);
+            IOTA = 0;
+            iA = 0;
+        }
+        output0[i] = fTemp0;
+        output1[i] = fTemp1;
+        output2[i] = fTemp2;
+        output3[i] = fTemp3;
+        // post processing
+        fRecb2[1] = fRecb2[0];
+        iRecb1[1] = iRecb1[0];
+        fRecb0[1] = fRecb0[0];
+        fRecb2r[1] = fRecb2r[0];
+        iRecb1r[1] = iRecb1r[0];
+        fRecb0r[1] = fRecb0r[0];
+    }
+    *fbargraph = 20.*log10(fmax(0.0000003,fRecb2[0]));
+    *fbargraph1 = 20.*log10(fmax(0.0000003,fRecb2r[0]));
+}
+
+void SCapture::quad_audio(int count, float *input0, float *input1, float *input2, float *input3,
+                    float *output0, float *output1, float *output2, float *output3, SCapture *p)
+{
+    (p)->compute_quad(count, input0, input1, input2, input3, output0, output1, output2, output3);
 }
 
 void SCapture::connect(uint32_t port,void* data)
