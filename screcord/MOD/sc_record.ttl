@@ -232,7 +232,7 @@ Developed by Brummer
     lv2:microVersion 1;
 
 rdfs:comment """
-Stereo Reocrder plugin, save audio stream as 4 channel wav or ogg files.
+Quad Reocrder plugin, save audio stream as 4 channel wav or ogg files.
 
 Features:
 Developed by Brummer
