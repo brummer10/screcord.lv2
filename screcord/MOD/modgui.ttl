@@ -59,7 +59,7 @@
         modgui:brand "hermann" ;
         modgui:label "QuadRecord" ;
         modgui:model "sc_record_quad" ;
-        modgui:monitoredOutputs [ lv2:symbol "CLIP" ] , [ lv2:symbol "LMETER" ];
+        modgui:monitoredOutputs [ lv2:symbol "CLIP" ] , [ lv2:symbol "LMETER" ] , [ lv2:symbol "RMETER" ];
         modgui:port [
             lv2:index 0 ;
             lv2:symbol "FORM" ;

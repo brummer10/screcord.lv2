@@ -62,11 +62,12 @@
     -ms-perspective: 1000;
     perspective: 1000;
 
+    will-change: transform;
     -webkit-transform: translate3d(0, 0, 0);
     -moz-transform: translate3d(0, 0, 0);
     -ms-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
-    transform: translate(-27.5%, -26%) scale(0.46);
+    transform: translate(-27.5%, -26%) scale(0.45);
 }
 
 .sc_record_quad{{{cns}}} .tape2 {
@@ -87,11 +88,12 @@
     -ms-perspective: 1000;
     perspective: 1000;
 
+    will-change: transform;
     -webkit-transform: translate3d(0, 0, 0);
     -moz-transform: translate3d(0, 0, 0);
     -ms-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
-    transform: translate(+22.5%, -126.5%) scale(0.45);
+    transform: translate(+22.5%, -126.5%) scale(0.43);
 }
 
 /* CONTROLS */
@@ -181,8 +183,8 @@
     overflow: hidden;
     position: absolute;
     text-align: center;
-    margin-left: 94px;
-    margin-top: -92px;
+    margin-left: 100px;
+    margin-top: -82px;
     width: 22px;
 }
 
@@ -198,6 +200,21 @@
     z-index: 2;
     border-radius: 5px 5px 0px 0px;
     box-shadow: 2px 2px 2px 0px #000 inset, -1px -1px 1px 1px #888 inset;
+
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000;
+    -moz-perspective: 1000;
+    -ms-perspective: 1000;
+    perspective: 1000;
+
+    will-change: transform;
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
 }
 
 .sc_record_quad{{{cns}}} .mod-meter .mod-meter-image-right {
@@ -213,6 +230,21 @@
     z-index: 2;
     border-radius: 5px 5px 0px 0px;
     box-shadow: 2px 2px 2px 0px #000 inset, -1px -1px 1px 1px #888 inset;
+
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000;
+    -moz-perspective: 1000;
+    -ms-perspective: 1000;
+    perspective: 1000;
+
+    will-change: transform;
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
 }
 
 /* ENUMERATED LIST */
