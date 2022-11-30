@@ -1,0 +1,193 @@
+/* SKINS */
+.sc_record_mini{{{cns}}} {
+    background-image: url(/resources/heads/model-001/mini.webp{{{ns}}});
+    background-size: 200px 200px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    font-family: Helvetica,Arial,Sans-serif;
+    height: 200px;
+    position: relative;
+    width: 200px;
+    border-radius: 50px;
+}
+
+.sc_record_mini{{{cns}}} .mod-pedal-input {
+    top: 66px;
+}
+
+/* THE AUTHOR */
+.sc_record_mini{{{cns}}} .mod-plugin-brand h1 {
+    bottom: 90px;
+    color: #fff;
+    font-size: 14px;
+    left: 54px;
+    line-height: 1;
+    margin: 0;
+    position: absolute;
+}
+
+/* PLUGIN'S NAME */
+.sc_record_mini{{{cns}}} .mod-plugin-name h1 {
+    bottom: 30px;
+    color: #666;
+    font-size: 20px;
+    left: 24px;
+    line-height: 1;
+    margin: 0;
+    position: absolute;
+}
+
+/* CONTROLS */
+.sc_record_mini{{{cns}}} .mod-control-group {
+    bottom: 149px;
+    color: #fff;
+    font-size: 10px;
+    height: 73px;
+    left: 100px;
+    position: absolute;
+    right: 14px;
+    top: 20px;
+}
+
+.sc_record_mini{{{cns}}} .mod-control-group > div {
+    margin-right: 2px;
+}
+
+/* SWITCH ON/OFF GENERAL */
+.sc_record_mini{{{cns}}} .mod-switch {
+    cursor: pointer;
+    float: left;
+    height: 85px;
+    position: relative;
+    margin-left: -50px;
+    margin-top: 40px;
+    width: 100px;
+}
+
+.sc_record_mini{{{cns}}} .mod-switch-image {
+    background-image: url(/resources/switches/Rec2_button.webp{{{ns}}});
+    background-position: left 0px;
+    background-repeat: no-repeat;
+    background-size: auto 85px;
+    height: 85px;
+    width: 100px;
+    z-index: 4;
+    cursor: pointer;
+}
+
+.sc_record_mini{{{cns}}} .mod-switch-image.on {
+    background-position: -100px 0px !important;
+}
+
+.sc_record_mini{{{cns}}} .mod-switch-image.off {
+    background-position: left 0px !important;
+}
+
+.sc_record_mini{{{cns}}} .mod-switch-image:hover {
+    filter: brightness(110%);
+}
+
+.sc_record_mini{{{cns}}} .mod-led {
+    float: left;
+    height: 64px;
+    overflow: hidden;
+    position: absolute;
+    margin-top: -20px;
+    margin-left: 20px;
+    text-align: center;
+    width: 64px;
+}
+
+.sc_record_mini{{{cns}}} .mod-led .mod-led-image {
+    background-image: url(/resources/switches/LED.webp{{{ns}}});
+    background-position: left 0px;
+    background-repeat: no-repeat;
+    background-size: auto 64px;
+    position: absolute;
+    margin-top: 5px;
+    margin-left: 0px;
+    height: 64px;
+    width: 64px;
+    z-index: 3;
+}
+
+.sc_record_mini{{{cns}}} .mod-led .mod-led-title {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    left: 0;
+    position: absolute;
+    right: 0;
+    text-transform: uppercase;
+    top: 0;
+    z-index: 1;
+}
+
+/* ENUMERATED LIST */
+.sc_record_mini{{{cns}}} .mod-enumerated {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    color: #666;
+    display: inline-block;
+    margin-top: 10px;
+    overflow: hidden;
+    position: absolute;
+    left: -60px;
+    top: -10px;
+    width: 85px;
+}
+
+.sc_record_mini{{{cns}}} .mod-enumerated .mod-enumerated-selected {
+    background:rgba(255,255,255,.85);
+    background-image:url(/resources/utils/dropdown-arrow-black.png{{{ns}}});
+    background-position:right center;
+    background-repeat:no-repeat;
+    border-radius:4px;
+    box-shadow: 2px 2px 2px 0px #000 inset, -1px -1px 1px 1px #888 inset;
+    font-weight: bold;
+    font-size: 19px;
+    height: 28px;
+    line-height: 1.5;
+    margin-right: 8px;
+    overflow: hidden;
+    padding: 0 9px;
+}
+
+/* WHEN IS HOVER */
+.sc_record_mini{{{cns}}} .mod-enumerated:hover .mod-enumerated-selected {
+    border-radius: 4px 4px 0 0;
+    filter: brightness(80%);
+}
+
+/* THE LIST OF OPTIONS */
+.sc_record_mini{{{cns}}} .mod-enumerated .mod-enumerated-list {
+    background: rgba(255,255,255,.85);
+    border-radius: 4px;
+    box-shadow:inset 1px 1px 10px #000;
+    display: none;
+    font-weight: bold;
+    font-size: 19px;
+    height: auto;
+    overflow: auto;
+    position: relative;
+    width: 80px;
+    z-index: 5;
+}
+
+.sc_record_mini{{{cns}}} .mod-enumerated .mod-enumerated-list > div {
+    padding: 3px 9px;
+}
+
+.sc_record_mini{{{cns}}} .mod-enumerated .mod-enumerated-list > div:hover {
+    background: rgba(0,0,0,.35);
+    cursor: pointer;
+}
+
+/* SEPARATOR */
+.sc_record_mini{{{cns}}} .mod-separator {
+    background: #000;
+    display: inline-block;
+    float: left;
+    height: 69px;
+    margin-top: 2px;
+    width: 1px;
+}

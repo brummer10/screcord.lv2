@@ -26,14 +26,14 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix guiext: <http://lv2plug.in/ns/extensions/ui#>.
 
-<https://github.com/brummer10/screcord#mono_record>
+<https://github.com/brummer10/screcord#mono_record_mini>
     a lv2:Plugin ,
         lv2:UtilityPlugin ;
     doap:maintainer [
 		foaf:name "brummer";
 		foaf:homepage <https://github.com/brummer10/screcord.lv2>;
 	] ;
-    doap:name "Record-Mono";
+    doap:name "Record-Mono Mini";
     doap:license <http://opensource.org/licenses/isc> ;
     lv2:project <https://github.com/brummer10/screcord.lv2> ;
     lv2:optionalFeature lv2:hardRTCapable ;
@@ -43,7 +43,7 @@
     lv2:microVersion 2;
 
 rdfs:comment """
-Mono Recorder plugin, save audio stream as wav or ogg files.
+Mono Recorder plugin with a minimalistic UI, save audio stream as wav or ogg files.
 
 Features:
 Developed by Brummer
@@ -111,14 +111,14 @@ Developed by Brummer
         lv2:name "In" ;
     ] .
 
-<https://github.com/brummer10/screcord#stereo_record>
+<https://github.com/brummer10/screcord#stereo_record_mini>
     a lv2:Plugin ,
         lv2:UtilityPlugin ;
     doap:maintainer [
 		foaf:name "brummer";
 		foaf:homepage <https://github.com/brummer10/screcord.lv2>;
 	] ;
-    doap:name "Record-Stereo";
+    doap:name "Record-Stereo Mini";
     doap:license <http://opensource.org/licenses/isc> ;
     lv2:project <https://github.com/brummer10/sc_record> ;
     lv2:optionalFeature lv2:hardRTCapable ;
@@ -127,7 +127,7 @@ Developed by Brummer
     lv2:microVersion 2;
 
 rdfs:comment """
-Stereo Reocrder plugin, save audio stream as wav or ogg files.
+Stereo Reocrder plugin with a minimalistic UI, save audio stream as wav or ogg files.
 
 Features:
 Developed by Brummer
@@ -216,14 +216,14 @@ Developed by Brummer
         lv2:name "In1" ;
     ] .
 
-<https://github.com/brummer10/screcord#quad_record>
+<https://github.com/brummer10/screcord#quad_record_mini>
     a lv2:Plugin ,
         lv2:UtilityPlugin ;
     doap:maintainer [
 		foaf:name "brummer";
 		foaf:homepage <https://github.com/brummer10/screcord.lv2>;
 	] ;
-    doap:name "Record-Quad";
+    doap:name "Record-Quad Mini";
     doap:license <http://opensource.org/licenses/isc> ;
     lv2:project <https://github.com/brummer10/sc_record> ;
     lv2:optionalFeature lv2:hardRTCapable ;
@@ -232,7 +232,7 @@ Developed by Brummer
     lv2:microVersion 2;
 
 rdfs:comment """
-Quad Reocrder plugin, save audio stream as 4 channel wav or ogg files.
+Quad Reocrder plugin with a minimalistic UI, save audio stream as 4 channel wav or ogg files.
 
 Features:
 Developed by Brummer

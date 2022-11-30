@@ -48,6 +48,7 @@
 	# set bundle name
 	NAME = sc_record
 	BUNDLE = $(NAME).lv2
+	BUNDLE_MINI = $(NAME)_mini.lv2
 	VER = 0.2
 
 	RESOURCES_DIR :=./
@@ -84,11 +85,19 @@ all : check $(NAME)
 	else echo $(RED)"sorry, build failed"; fi
 	@echo $(NONE)
 
-mod :  nogui
+mod :  nogui modmini clean
 	@mkdir -p ../$(BUNDLE)
 	@cp -R ./MOD/* ../$(BUNDLE)
-	@mv ./*.so ../$(BUNDLE)
+	@mv ./$(NAME).so ../$(BUNDLE)
 	@if [ -f ../$(BUNDLE)/$(NAME).so ]; then echo $(BLUE)"build finish, now run make install"; \
+	else echo $(RED)"sorry, build failed"; fi
+	@echo $(NONE)
+
+modmini :  noguimini
+	@mkdir -p ../$(BUNDLE_MINI)
+	@cp -R ./MOD-MINI/* ../$(BUNDLE_MINI)
+	@mv ./$(NAME)_mini.so ../$(BUNDLE_MINI)
+	@if [ -f ../$(BUNDLE_MINI)/$(NAME)_mini.so ]; then echo $(BLUE)"build finish, now run make install"; \
 	else echo $(RED)"sorry, build failed"; fi
 	@echo $(NONE)
 
@@ -126,12 +135,14 @@ clean :
 	rm -f *.a *.o *.so xresources.h
 	@rm -f $(NAME).so
 	@rm -rf ../$(BUNDLE)
+	@rm -rf ../$(BUNDLE_MINI)
 	@rm -rf ./$(RES_OBJECTS)
 	@echo ". ." $(BLUE)", clean up"$(NONE)
 
 dist-clean :
 	@rm -f $(NAME).so
 	@rm -rf ../$(BUNDLE)
+	@rm -rf ../$(BUNDLE_MINI)
 	@rm -rf ./$(RES_OBJECTS)
 	@echo ". ." $(BLUE)", clean up"$(NONE)
 
@@ -143,9 +154,14 @@ ifneq ("$(wildcard ../$(BUNDLE))","")
 else
 	@echo ". ." $(BLUE)", you must build first"$(NONE)
 endif
+ifneq ("$(wildcard ../$(BUNDLE_MINI))","")
+	@mkdir -p $(DESTDIR)$(INSTALL_DIR)/$(BUNDLE_MINI)
+	cp -r ../$(BUNDLE_MINI)/* $(DESTDIR)$(INSTALL_DIR)/$(BUNDLE_MINI)
+endif
 
 uninstall :
 	@rm -rf $(INSTALL_DIR)/$(BUNDLE)
+	@rm -rf $(INSTALL_DIR)/$(BUNDLE_MINI)
 	@echo ". ." $(BLUE)", done"$(NONE)
 
 $(NAME) : clean $(RES_OBJECTS)
@@ -157,6 +173,10 @@ $(NAME) : clean $(RES_OBJECTS)
 nogui : clean
 	$(CXX) $(CXXFLAGS) $(OBJECTS) $(LDFLAGS) -o $(NAME).so
 	$(STRIP) -s -x -X -R .note.ABI-tag $(NAME).so
+
+noguimini : clean
+	$(CXX) $(CXXFLAGS) $(OBJECTS) -DMINIREC=1 $(LDFLAGS) -o $(NAME)_mini.so
+	$(STRIP) -s -x -X -R .note.ABI-tag $(NAME)_mini.so
 
 doc:
 	#pass

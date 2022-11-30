@@ -1,0 +1,72 @@
+@prefix modgui: <http://moddevices.com/ns/modgui#> .
+@prefix lv2:    <http://lv2plug.in/ns/lv2core#> .
+
+<https://github.com/brummer10/screcord#mono_record_mini>
+    modgui:gui [
+        modgui:resourcesDirectory <modgui> ;
+        modgui:iconTemplate <modgui/icon-monorecord_mini.html> ;
+        modgui:stylesheet <modgui/stylesheet-monorecord_mini.css> ;
+        modgui:screenshot <modgui/screenshot-monorecord_mini.png> ;
+        modgui:thumbnail <modgui/thumbnail-monorecord_mini.png> ;
+        modgui:javascript <modgui/script-screcord_mini.js> ;
+        modgui:brand "brummer" ;
+        modgui:label "Record Mono Mini" ;
+        modgui:model "sc_record_mini" ;
+        modgui:monitoredOutputs [ lv2:symbol "CLIP" ] ;
+        modgui:port [
+            lv2:index 0 ;
+            lv2:symbol "FORMAT" ;
+            lv2:name "FORMAT" ;
+        ] , [
+            lv2:index 1 ;
+            lv2:symbol "REC" ;
+            lv2:name "REC" ;
+        ] ;
+    ] .
+
+
+<https://github.com/brummer10/screcord#stereo_record_mini>
+    modgui:gui [
+        modgui:resourcesDirectory <modgui> ;
+        modgui:iconTemplate <modgui/icon-stereorecord_mini.html> ;
+        modgui:stylesheet <modgui/stylesheet-stereorecord_mini.css> ;
+        modgui:screenshot <modgui/screenshot-stereorecord_mini.png> ;
+        modgui:thumbnail <modgui/thumbnail-stereorecord_mini.png> ;
+        modgui:javascript <modgui/script-screcord_mini.js> ;
+        modgui:brand "brummer" ;
+        modgui:label "Record Stereo Mini" ;
+        modgui:model "sc_record_stereo_mini" ;
+        modgui:monitoredOutputs [ lv2:symbol "CLIP" ] ;
+        modgui:port [
+            lv2:index 0 ;
+            lv2:symbol "FORM" ;
+            lv2:name "FORM" ;
+        ] , [
+            lv2:index 1 ;
+            lv2:symbol "REC" ;
+            lv2:name "REC" ;
+        ] ;
+    ] .
+
+<https://github.com/brummer10/screcord#quad_record_mini>
+    modgui:gui [
+        modgui:resourcesDirectory <modgui> ;
+        modgui:iconTemplate <modgui/icon-quadrecord_mini.html> ;
+        modgui:stylesheet <modgui/stylesheet-quadrecord_mini.css> ;
+        modgui:screenshot <modgui/screenshot-quadrecord_mini.png> ;
+        modgui:thumbnail <modgui/thumbnail-quadrecord_mini.png> ;
+        modgui:javascript <modgui/script-screcord_mini.js> ;
+        modgui:brand "brummer" ;
+        modgui:label "Record Quad Mini" ;
+        modgui:model "sc_record_quad" ;
+        modgui:monitoredOutputs [ lv2:symbol "CLIP" ] ;
+        modgui:port [
+            lv2:index 0 ;
+            lv2:symbol "FORM" ;
+            lv2:name "FORM" ;
+        ] , [
+            lv2:index 1 ;
+            lv2:symbol "REC" ;
+            lv2:name "REC" ;
+        ] ;
+    ] .

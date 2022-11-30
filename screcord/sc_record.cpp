@@ -71,9 +71,7 @@ private:
 
 public:
   // LV2 Descriptor
-  static const LV2_Descriptor descriptor;
-  static const LV2_Descriptor descriptor1;
-  static const LV2_Descriptor descriptor2;
+  static const LV2_Descriptor descriptor[3];
   LV2_State_Make_Path* make_path;
   // static wrapper to private functions
   static void deactivate(LV2_Handle instance);
@@ -461,41 +459,73 @@ void SCrecord::cleanup(LV2_Handle instance)
   delete self;
 }
 
-const LV2_Descriptor SCrecord::descriptor =
-{
-  SCPLUGIN_URI "#mono_record",
-  SCrecord::instantiate,
-  SCrecord::connect_port,
-  SCrecord::activate,
-  SCrecord::run,
-  SCrecord::deactivate,
-  SCrecord::cleanup,
-  NULL
+#ifndef MINIREC
+const LV2_Descriptor SCrecord::descriptor[] = {
+    {
+      SCPLUGIN_URI "#mono_record",
+      SCrecord::instantiate,
+      SCrecord::connect_port,
+      SCrecord::activate,
+      SCrecord::run,
+      SCrecord::deactivate,
+      SCrecord::cleanup,
+      NULL
+    },
+    {
+      SCPLUGIN_URI "#stereo_record",
+      SCrecord::instantiate_st,
+      SCrecord::connect_port,
+      SCrecord::activate,
+      SCrecord::run_st,
+      SCrecord::deactivate,
+      SCrecord::cleanup,
+      NULL
+    },
+    {
+      SCPLUGIN_URI "#quad_record",
+      SCrecord::instantiate_quad,
+      SCrecord::connect_port,
+      SCrecord::activate,
+      SCrecord::run_quad,
+      SCrecord::deactivate,
+      SCrecord::cleanup,
+      NULL
+    },
 };
-
-const LV2_Descriptor SCrecord::descriptor1 =
-{
-  SCPLUGIN_URI "#stereo_record",
-  SCrecord::instantiate_st,
-  SCrecord::connect_port,
-  SCrecord::activate,
-  SCrecord::run_st,
-  SCrecord::deactivate,
-  SCrecord::cleanup,
-  NULL
+#else
+const LV2_Descriptor SCrecord::descriptor[] = {
+    {
+      SCPLUGIN_URI "#mono_record_mini",
+      SCrecord::instantiate,
+      SCrecord::connect_port,
+      SCrecord::activate,
+      SCrecord::run,
+      SCrecord::deactivate,
+      SCrecord::cleanup,
+      NULL
+    },
+    {
+      SCPLUGIN_URI "#stereo_record_mini",
+      SCrecord::instantiate_st,
+      SCrecord::connect_port,
+      SCrecord::activate,
+      SCrecord::run_st,
+      SCrecord::deactivate,
+      SCrecord::cleanup,
+      NULL
+    },
+    {
+      SCPLUGIN_URI "#quad_record_mini",
+      SCrecord::instantiate_quad,
+      SCrecord::connect_port,
+      SCrecord::activate,
+      SCrecord::run_quad,
+      SCrecord::deactivate,
+      SCrecord::cleanup,
+      NULL
+    },
 };
-
-const LV2_Descriptor SCrecord::descriptor2 =
-{
-  SCPLUGIN_URI "#quad_record",
-  SCrecord::instantiate_quad,
-  SCrecord::connect_port,
-  SCrecord::activate,
-  SCrecord::run_quad,
-  SCrecord::deactivate,
-  SCrecord::cleanup,
-  NULL
-};
+#endif
 
 ////////////////////////// LV2 SYMBOL EXPORT ///////////////////////////
 
@@ -503,16 +533,10 @@ LV2_SYMBOL_EXPORT
 const LV2_Descriptor*
 lv2_descriptor(uint32_t index)
 {
-  switch (index)
-    {
-    case 0:
-      return &SCrecord::descriptor;
-    case 1:
-      return &SCrecord::descriptor1;
-    case 2:
-      return &SCrecord::descriptor2;
-    default:
-      return NULL;
+    if (index<3) {
+        return &SCrecord::descriptor[index];
+    } else {
+        return NULL;
     }
 }
 
