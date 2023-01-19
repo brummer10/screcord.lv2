@@ -22,6 +22,7 @@
 #include <pthread.h>
 #include <sys/stat.h>
 
+#include <iomanip>
 #include <sstream>
 #include <cstdio>
 #include <cstdlib>

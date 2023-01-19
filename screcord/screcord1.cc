@@ -97,7 +97,7 @@ public:
 template <class T>
 inline std::string to_string(const T& t) {
     std::stringstream ss;
-    ss << t;
+    ss << std::setfill('0') << std::setw(3) << t;
     return ss.str();
 }
 
@@ -148,18 +148,17 @@ inline std::string SCapture::get_ffilename() {
     }
 
 #ifndef  __MOD_DEVICES__
-    std::string name = is_wav ?  "lv2_session000.wav" : "lv2_session000.ogg" ;
+    std::string name = is_wav ?  "lv2_session199.wav" : "lv2_session199.ogg" ;
 #else
-    std::string name = is_wav ?  "mod_session000.wav" : "mod_session000.ogg" ;
+    std::string name = is_wav ?  "mod_session199.wav" : "mod_session199.ogg" ;
 #endif
-    int i = 0;
-    int j = 0;
-    while (stat ((pPath+name).c_str(), &buffer) == 0) {
-        if (i>9) j = 1;
-        if (i>99) j = 2;
-        name.replace(name.begin()+13-j,name.end()-4,to_string(i)); 
-        i+=1;
+    int i = 199;
+    while (stat ((pPath+name).c_str(), &buffer) != 0) {
+        name.replace(name.begin()+11,name.end()-4,to_string(i)); 
+        i-=1;
     }
+    i+=2;
+    name.replace(name.begin()+11,name.end()-4,to_string(i)); 
     return pPath+name;
 }
 
@@ -327,17 +326,17 @@ void always_inline SCapture::compute(int count, float *input0, float *output0)
         
         if (iSlow0) { //record
             if (iA) {
-                fRec1[IOTA] = fTemp0;
+                fRec1[IOTA++] = fTemp0;
             } else {
-                fRec0[IOTA] = fTemp0;
+                fRec0[IOTA++] = fTemp0;
             }
-            IOTA = (IOTA<MAXRECSIZE) ? IOTA+1 : 0; 
-            if (!IOTA) { // when buffer is full, flush to stream
+            if (IOTA > MAXRECSIZE-1) { // when buffer is full, flush to stream
                 iA = iA ? 0 : 1 ;
                 tape = iA ? fRec0 : fRec1;
                 keep_stream = true;
-                savesize = MAXRECSIZE;
+                savesize = IOTA;
                 sem_post(&m_trig);
+                IOTA = 0;
             }
         } else if (IOTA) { // when record stoped, flush the rest to stream
             tape = iA ? fRec1 : fRec0;
@@ -384,19 +383,19 @@ void always_inline SCapture::compute_st(int count, float *input0, float *input1,
         
         if (iSlow0) { //record
             if (iA) {
-                fRec1[IOTA] = fTemp0;
-                fRec1[IOTA+1] = fTemp1;
+                fRec1[IOTA++] = fTemp0;
+                fRec1[IOTA++] = fTemp1;
             } else {
-                fRec0[IOTA] = fTemp0;
-                fRec0[IOTA+1] = fTemp1;
+                fRec0[IOTA++] = fTemp0;
+                fRec0[IOTA++] = fTemp1;
             }
-            IOTA = (IOTA<MAXRECSIZE-2) ? IOTA+2 : 0; 
-            if (!IOTA) { // when buffer is full, flush to stream
+            if (IOTA > MAXRECSIZE-2) { // when buffer is full, flush to stream
                 iA = iA ? 0 : 1 ;
                 tape = iA ? fRec0 : fRec1;
                 keep_stream = true;
-                savesize = MAXRECSIZE;
+                savesize = IOTA;
                 sem_post(&m_trig);
+                IOTA = 0;
             }
         } else if (IOTA) { // when record stoped, flush the rest to stream
             tape = iA ? fRec1 : fRec0;
@@ -451,23 +450,23 @@ void always_inline SCapture::compute_quad(int count, float *input0, float *input
         
         if (iSlow0) { //record
             if (iA) {
-                fRec1[IOTA] = fTemp0;
-                fRec1[IOTA+1] = fTemp1;
-                fRec1[IOTA+2] = fTemp2;
-                fRec1[IOTA+3] = fTemp3;
+                fRec1[IOTA++] = fTemp0;
+                fRec1[IOTA++] = fTemp1;
+                fRec1[IOTA++] = fTemp2;
+                fRec1[IOTA++] = fTemp3;
             } else {
-                fRec0[IOTA] = fTemp0;
-                fRec0[IOTA+1] = fTemp1;
-                fRec0[IOTA+2] = fTemp2;
-                fRec0[IOTA+3] = fTemp3;
+                fRec0[IOTA++] = fTemp0;
+                fRec0[IOTA++] = fTemp1;
+                fRec0[IOTA++] = fTemp2;
+                fRec0[IOTA++] = fTemp3;
             }
-            IOTA = (IOTA<MAXRECSIZE-6) ? IOTA+4 : 0; 
-            if (!IOTA) { // when buffer is full, flush to stream
+            if (IOTA > MAXRECSIZE-4) { // when buffer is full, flush to stream
                 iA = iA ? 0 : 1 ;
                 tape = iA ? fRec0 : fRec1;
                 keep_stream = true;
-                savesize = MAXRECSIZE;
+                savesize = IOTA;
                 sem_post(&m_trig);
+                IOTA = 0;
             }
         } else if (IOTA) { // when record stoped, flush the rest to stream
             tape = iA ? fRec1 : fRec0;
