@@ -156,6 +156,7 @@ inline std::string SCapture::get_ffilename() {
     while (stat ((pPath+name).c_str(), &buffer) != 0) {
         name.replace(name.begin()+11,name.end()-4,to_string(i)); 
         i-=1;
+        if (i < -1) break;
     }
     i+=2;
     name.replace(name.begin()+11,name.end()-4,to_string(i)); 
