@@ -140,7 +140,9 @@ inline std::string SCapture::get_ffilename() {
         pPath +="/lv2record/";
     }
 #else
-    pPath = "/data/user-files/Audio Recordings/lv2record/";
+    const char *Path = getenv("MOD_USER_FILES_DIR");
+    pPath = Path ? Path : "/data/user-files";
+    pPath += "/Audio Recordings/lv2record/";
 #endif
     is_wav = int(*fformat) ? false : true;
     if (!(stat(pPath.c_str(), &sb) == 0 && S_ISDIR(sb.st_mode))) {
