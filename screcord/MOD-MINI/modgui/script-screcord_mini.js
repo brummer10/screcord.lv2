@@ -6,7 +6,7 @@ function (event) {
         switch (symbol) {
             case 'CLIP':
                 position = (Math.min(Math.floor(value), 1) * 64).toFixed(1);
-                event.icon.find ('[mod-role=CLIP]').css({backgroundPosition: `-${position}px 0px`});
+                event.icon.find ('[mod-role=CLIP]').css({backgroundPosition: "-"+position+"px 0px"});
                 break;
             default:
                 break;
