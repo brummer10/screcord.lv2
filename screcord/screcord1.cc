@@ -17,6 +17,15 @@
  * --------------------------------------------------------------------------
  */
 
+#if defined(WIN32) || defined(_WIN32)
+#include <windows.h>
+#endif
+
+#include <atomic>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+
 namespace screcord {
 
 #define fmax(x, y) (((x) > (y)) ? (x) : (y))
@@ -26,6 +35,34 @@ namespace screcord {
 
 #define MAXRECSIZE 102400  //100kb
 #define MAXFILESIZE INT_MAX-MAXRECSIZE // 2147352576  //2147483648-MAXRECSIZE
+
+#if defined(WIN32) || defined(_WIN32)
+#include <windows.h>
+#define PATH_SEPARATOR "\\" 
+#else 
+#define PATH_SEPARATOR "/" 
+#endif
+
+// --------------------------------------------------------------------------------
+
+class SCapture;
+
+class SCaptureWorker {
+private:
+    std::atomic<bool> _execute;
+    std::thread _thd;
+    std::mutex m;
+
+public:
+    SCaptureWorker();
+    ~SCaptureWorker();
+    void stop();
+    void start(SCapture *pt);
+    bool is_running() const noexcept;
+    std::condition_variable cv;
+};
+
+// --------------------------------------------------------------------------------
 
 class SCapture {
 private:
@@ -44,10 +81,7 @@ private:
     float           *fRec0;
     float           *fRec1;
     float           *tape;
-    sem_t           m_trig;
-    pthread_t       m_pthr;
-    int32_t         rt_prio;
-    int32_t         rt_policy;
+    SCaptureWorker  worker;
     volatile bool   keep_stream;
     bool            mem_allocated;
     bool            is_wav;
@@ -71,16 +105,14 @@ private:
     void        save_to_wave(SNDFILE * sf, float *tape, int lSize);
     SNDFILE     *open_stream(std::string fname);
     void        close_stream(SNDFILE **sf);
-    void        stop_thread();
-    void        start_thread();
     void        disc_stream();
+    inline std::string get_path();
     inline std::string get_ffilename(); 
     void connect(uint32_t port,void* data);
-    static void *run_thread(void* p);
 
 public:
     LV2_State_Make_Path* make_path;
-    void        set_thread_prio(int32_t prio, int32_t policy);
+    static void run_thread(void* p);
     static void clear_state(SCapture*);
     static int  activate_plugin(bool start, SCapture*);
     static void set_samplerate(unsigned int samplingFreq, SCapture*);
@@ -94,6 +126,8 @@ public:
     ~SCapture();
 };
 
+// --------------------------------------------------------------------------------
+
 template <class T>
 inline std::string to_string(const T& t) {
     std::stringstream ss;
@@ -101,54 +135,117 @@ inline std::string to_string(const T& t) {
     return ss.str();
 }
 
+// --------------------------------------------------------------------------------
+
+SCaptureWorker::SCaptureWorker()
+    : _execute(false) {
+}
+
+SCaptureWorker::~SCaptureWorker() {
+    if( _execute.load(std::memory_order_acquire) ) {
+        stop();
+    };
+}
+
+void SCaptureWorker::stop() {
+    _execute.store(false, std::memory_order_release);
+    if (_thd.joinable()) {
+        cv.notify_one();
+        _thd.join();
+    }
+}
+
+void SCaptureWorker::start(SCapture *pt) {
+    if( _execute.load(std::memory_order_acquire) ) {
+        stop();
+    };
+    _execute.store(true, std::memory_order_release);
+    _thd = std::thread([this, pt]() {
+        while (_execute.load(std::memory_order_acquire)) {
+            std::unique_lock<std::mutex> lk(m);
+            // wait for signal from dsp that work is to do
+            cv.wait(lk);
+            //do work
+            if (_execute.load(std::memory_order_acquire)) {
+                pt->run_thread(pt);
+            }
+        }
+        // when done
+    });
+}
+
+bool SCaptureWorker::is_running() const noexcept {
+    return ( _execute.load(std::memory_order_acquire) && 
+             _thd.joinable() );
+}
+
+// --------------------------------------------------------------------------------
+
 SCapture::SCapture(int channel_)
     : recfile(NULL),
       channel(channel_),
       fRec0(0),
       fRec1(0),
       tape(fRec0),
-      m_pthr(0),
-      rt_prio(0),
-      rt_policy(0),
       keep_stream(false),
       mem_allocated(false),
       err(false) {
-    sem_init(&m_trig, 0, 0);
-    start_thread();
+    worker.start(this);
 }
 
 SCapture::~SCapture() {
-    stop_thread();
+    worker.stop();
     activate(false);
 }
 
-inline std::string SCapture::get_ffilename() {
-    struct stat buffer;
+// get the path were to save the recording 
+inline std::string SCapture::get_path() {
     struct stat sb;
     std::string pPath;
 
 #ifndef  __MOD_DEVICES__
-    const char *Path = NULL;
-    if (make_path) {
-        Path = make_path->path(make_path->handle, "lv2record");
+   #ifdef _WIN32
+    pPath = getenv("USERPROFILE");
+    if (pPath.empty()) {
+        pPath = getenv("HOMEDRIVE");
+        pPath +=  getenv("HOMEPATH");
     }
-    if ((Path != NULL) &&(strcmp(Path,"lv2record") != 0)) {
-        pPath = Path;
-        pPath +="/";
-    } else {
-        pPath = getenv("HOME");
-        pPath +="/lv2record/";
-    }
-#else
-    const char *Path = getenv("MOD_USER_FILES_DIR");
-    pPath = Path ? Path : "/data/user-files";
-    pPath += "/Audio Recordings/lv2record/";
-#endif
-    is_wav = int(*fformat) ? false : true;
+   #else
+    pPath = getenv("HOME");
+   #endif
+    pPath += PATH_SEPARATOR "lv2record" PATH_SEPARATOR;
+#else // __MOD_DEVICES__
+   #ifdef _WIN32
+    WCHAR wpath[MAX_PATH] = {};
+    DWORD wpathlen = GetEnvironmentVariableW(L"MOD_USER_FILES_DIR", wpath, MAX_PATH);
+    if (wpathlen <= 0)
+        return {};
+    pPath.resize(wpathlen);
+    WideCharToMultiByte(CP_UTF8, 0, wpath, wpathlen, &pPath[0], MAX_PATH, NULL, NULL);
+   #else
+    if (const char* const userFilesDir = std::getenv("MOD_USER_FILES_DIR"))
+        pPath = userFilesDir;
+    else
+        pPath = "/data/user-files";
+   #endif
+    pPath += PATH_SEPARATOR "Audio Recordings" PATH_SEPARATOR "lv2record" PATH_SEPARATOR;
+#endif // __MOD_DEVICES__
+
     if (!(stat(pPath.c_str(), &sb) == 0 && S_ISDIR(sb.st_mode))) {
+       #ifdef _WIN32
+        mkdir(pPath.c_str());
+       #else
         mkdir(pPath.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+       #endif
     }
 
+    return pPath;
+}
+
+inline std::string SCapture::get_ffilename() {
+    struct stat buffer;
+    std::string pPath = get_path();
+    is_wav = int(*fformat) ? false : true;
 #ifndef  __MOD_DEVICES__
     std::string name = is_wav ?  "lv2_session199.wav" : "lv2_session199.ogg" ;
 #else
@@ -166,61 +263,21 @@ inline std::string SCapture::get_ffilename() {
 }
 
 void SCapture::disc_stream() {
-    for (;;) {
-        sem_wait(&m_trig);
-        if (!recfile) {
-            std::string fname = get_ffilename();
-            recfile = open_stream(fname);
-        }
-        save_to_wave(recfile, tape, savesize);
-        filesize +=savesize;
-        if ((!keep_stream && recfile) || (filesize >MAXFILESIZE && is_wav)) {
-            close_stream(&recfile);
-            filesize = 0;
-        }
+    if (!worker.is_running()) return;
+    if (!recfile) {
+        std::string fname = get_ffilename();
+        recfile = open_stream(fname);
+    }
+    save_to_wave(recfile, tape, savesize);
+    filesize +=savesize;
+    if ((!keep_stream && recfile) || (filesize >MAXFILESIZE && is_wav)) {
+        close_stream(&recfile);
+        filesize = 0;
     }
 }
 
-void SCapture::set_thread_prio(int32_t prio, int32_t policy) {
-    rt_prio = prio;
-    rt_policy = policy;
-}
-
-void *SCapture::run_thread(void *p) {
+void SCapture::run_thread(void *p) {
     (reinterpret_cast<SCapture *>(p))->disc_stream();
-    return NULL;
-}
-
-void SCapture::stop_thread() {
-    pthread_cancel (m_pthr);
-    pthread_join (m_pthr, NULL);
-}
-
-void SCapture::start_thread() {
-    pthread_attr_t      attr;
-    struct sched_param  spar;
-    if (rt_prio == 0) {
-        rt_prio = sched_get_priority_max(SCHED_FIFO);
-    }
-    if ((rt_prio/5) > 0) rt_prio = rt_prio/5;
-    spar.sched_priority = rt_prio;
-    pthread_attr_init(&attr);
-    pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_JOINABLE );
-    pthread_setcancelstate (PTHREAD_CANCEL_ENABLE, NULL);
-    if (rt_policy == 0) {
-        pthread_attr_setschedpolicy(&attr, SCHED_FIFO);
-    } else {
-        pthread_attr_setschedpolicy(&attr, rt_policy);
-    }
-    pthread_attr_setschedparam(&attr, &spar);
-    pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
-    pthread_attr_setinheritsched(&attr, PTHREAD_EXPLICIT_SCHED);
-    // pthread_attr_setstacksize(&attr, 0x10000);
-    if (pthread_create(&m_pthr, &attr, run_thread,
-                       reinterpret_cast<void*>(this))) {
-        err = true;
-    }
-    pthread_attr_destroy(&attr);
 }
 
 inline void SCapture::clear_state_f()
@@ -338,14 +395,14 @@ void always_inline SCapture::compute(int count, float *input0, float *output0)
                 tape = iA ? fRec0 : fRec1;
                 keep_stream = true;
                 savesize = IOTA;
-                sem_post(&m_trig);
+                worker.cv.notify_one();
                 IOTA = 0;
             }
         } else if (IOTA) { // when record stoped, flush the rest to stream
             tape = iA ? fRec1 : fRec0;
             savesize = IOTA;
             keep_stream = false;
-            sem_post(&m_trig);
+            worker.cv.notify_one();
             IOTA = 0;
             iA = 0;
         }
@@ -397,14 +454,14 @@ void always_inline SCapture::compute_st(int count, float *input0, float *input1,
                 tape = iA ? fRec0 : fRec1;
                 keep_stream = true;
                 savesize = IOTA;
-                sem_post(&m_trig);
+                worker.cv.notify_one();
                 IOTA = 0;
             }
         } else if (IOTA) { // when record stoped, flush the rest to stream
             tape = iA ? fRec1 : fRec0;
             savesize = IOTA;
             keep_stream = false;
-            sem_post(&m_trig);
+            worker.cv.notify_one();
             IOTA = 0;
             iA = 0;
         }
@@ -468,14 +525,14 @@ void always_inline SCapture::compute_quad(int count, float *input0, float *input
                 tape = iA ? fRec0 : fRec1;
                 keep_stream = true;
                 savesize = IOTA;
-                sem_post(&m_trig);
+                worker.cv.notify_one();
                 IOTA = 0;
             }
         } else if (IOTA) { // when record stoped, flush the rest to stream
             tape = iA ? fRec1 : fRec0;
             savesize = IOTA;
             keep_stream = false;
-            sem_post(&m_trig);
+            worker.cv.notify_one();
             IOTA = 0;
             iA = 0;
         }

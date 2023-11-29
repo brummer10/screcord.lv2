@@ -18,8 +18,6 @@
  */
 
 #include <unistd.h>
-#include <semaphore.h>
-#include <pthread.h>
 #include <sys/stat.h>
 
 #include <iomanip>
@@ -123,7 +121,6 @@ void SCrecord::init_dsp_(uint32_t rate)
   record = new screcord::SCapture(1);
   record->set_samplerate(rate, record); // init the DSP class
   record->make_path = make_path;
-  record->set_thread_prio(rt_prio, rt_policy);
 }
 
 void SCrecord::init_dsp_st(uint32_t rate)
@@ -131,7 +128,6 @@ void SCrecord::init_dsp_st(uint32_t rate)
   record = new screcord::SCapture(2);
   record->set_samplerate(rate, record); // init the DSP class
   record->make_path = make_path;
-  record->set_thread_prio(rt_prio, rt_policy);
 }
 
 void SCrecord::init_dsp_quad(uint32_t rate)
@@ -139,7 +135,6 @@ void SCrecord::init_dsp_quad(uint32_t rate)
   record = new screcord::SCapture(4);
   record->set_samplerate(rate, record); // init the DSP class
   record->make_path = make_path;
-  record->set_thread_prio(rt_prio, rt_policy);
 }
 
 // connect the Ports used by the plug-in class
