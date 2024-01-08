@@ -347,8 +347,8 @@ void SCapture::mem_alloc()
 void SCapture::mem_free()
 {
     mem_allocated = false;
-    if (fRec0) { delete fRec0; fRec0 = 0; }
-    if (fRec1) { delete fRec1; fRec1 = 0; }
+    if (fRec0) { delete[] fRec0; fRec0 = 0; }
+    if (fRec1) { delete[] fRec1; fRec1 = 0; }
 }
 
 int SCapture::activate(bool start)

@@ -64,7 +64,10 @@
 	CFLAGS += -I. -I./dsp  -fPIC -DPIC -O2 -Wall -funroll-loops `pkg-config --cflags sndfile`\
 	-ffast-math -fomit-frame-pointer -fstrength-reduce -fdata-sections -Wl,--gc-sections $(SSE_CFLAGS)
 	CXXFLAGS += -std=c++11 $(CFLAGS)
-	LDFLAGS += -I.  -lm -shared -Llibrary -lc -lm -lrt -fPIC -DPIC `pkg-config --libs sndfile` 
+	LDFLAGS += -I. -lm -shared -Llibrary -lm -fPIC -DPIC `pkg-config --libs sndfile`
+	ifneq ($(MACOS)$(WINDOWS),true)
+		LDFLAGS += -lrt -lc
+	endif
 	GUI_LDFLAGS += -I. -I$(HEADER_DIR) \
 	-L. $(LIB_DIR)libxputty.a -shared `pkg-config --static --cflags --libs cairo x11` -lm 
 	# invoke build files
